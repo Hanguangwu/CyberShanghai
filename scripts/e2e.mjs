@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import { spawn } from 'node:child_process'
 import { request } from 'node:http'
 import { pathToFileURL } from 'node:url'
+import * as THREE from 'three'
 
 let playwrightModule
 try { playwrightModule = await import('playwright') } catch { playwrightModule = await import(pathToFileURL('C:/Users/tianh/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.js').href) }
@@ -18,23 +19,65 @@ const waitForServer = () => new Promise((resolve, reject) => {
 try {
   await waitForServer()
   const browser = await chromium.launch({ headless: true })
-  const page = await browser.newPage()
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } })
   const errors = []
   page.on('pageerror', (error) => errors.push(error.message))
+
+  // 模型加载必须在真实浏览器里被验证：pioche.glb 是本次接入的中央主塔模型。
+  const waitForModel = (file) => page.waitForResponse((response) => response.url().endsWith(file) && response.status() === 200, { timeout: 30000 })
+  const centerTowerModel = waitForModel('pioche.glb')
+  const towerModel = waitForModel('flametower_pbr.glb')
+  const enemyModel = waitForModel('patrol-robot.glb')
+
   await page.goto('http://127.0.0.1:4173/')
-  assert.equal(await page.getByRole('heading', { name: '\u8d5b\u535a\u6caa\u4e0a\uff1a\u91ce\u732a\u56f4\u57ce' }).isVisible(), true)
-  assert.equal(await page.getByText('\u7b2c 1 \u5173 \u00b7 \u7b2c\u4e00\u7ae0 \u00b7 \u96fe\u6e2f\u8b66\u62a5').isVisible(), true)
-  assert.equal(await page.getByText('\u5916\u6ee9\u80fd\u6e90\u73af\u7ebf', { exact: true }).isVisible(), true)
-  for (const name of ['\u8109\u51b2\u70ae', '\u7535\u5f27\u5854', '\u51b0\u971c\u5854', '\u78c1\u8f68\u70ae', '\u6bd2\u96fe\u5854', '\u9ed1\u5ba2\u5854']) assert.equal(await page.getByRole('button', { name: new RegExp(name) }).isVisible(), true)
+  assert.equal(await page.getByRole('heading', { name: '赛博沪上：野猪围城' }).isVisible(), true)
+  assert.equal(await page.getByText('第 1 关 · 第一章 · 雾港警报').isVisible(), true)
+  assert.equal(await page.getByText('外滩能源环线', { exact: true }).isVisible(), true)
+  for (const name of ['脉冲炮', '电弧塔', '冰霜塔', '磁轨炮', '毒雾塔', '黑客塔']) assert.equal(await page.getByRole('button', { name: new RegExp(name) }).isVisible(), true)
+  assert.equal(await page.getByRole('button', { name: '护城河' }).count(), 0)
+
   await page.evaluate(() => localStorage.clear())
-  await page.getByRole('button', { name: '\u97f3\u4e50\u5173' }).click()
-  await page.getByRole('button', { name: '\u542f\u52a8\u4e0b\u4e00\u6ce2\u8fdb\u653b' }).click()
-  assert.equal(await page.getByRole('button', { name: '\u6682\u505c' }).isEnabled(), true)
-  await page.getByRole('button', { name: '\u6682\u505c' }).click()
-  assert.equal(await page.getByRole('button', { name: '\u7ee7\u7eed' }).isVisible(), true)
-  await page.getByRole('button', { name: '\u5b58\u6863' }).click()
+
+  // 开局改为盲盒：玩家不能选卡，只能开盒。
+  assert.equal(await page.getByRole('button', { name: /抽取此卡/ }).count(), 0, 'ora the blind box must not offer a choice')
+  assert.equal(await page.getByRole('button', { name: '开启盲盒' }).count(), 1, 'there must be exactly one blind-box button')
+  await page.getByRole('button', { name: '开启盲盒' }).click()
+  await page.getByRole('button', { name: '进入战斗' }).click()
+  assert.equal(await page.locator('.card-overlay').count(), 0, 'confirming the card must dismiss the overlay')
+
+  await Promise.all([centerTowerModel, towerModel, enemyModel])
+
+  // 回归：已建造的炮塔必须能再次被选中（否则无法升级/出售）。
+  const canvas = page.locator('canvas')
+  const box = await canvas.boundingBox()
+  assert.ok(box, 'the 3D canvas must be present')
+  const toScreen = (x, y, z) => {
+    const camera = new THREE.PerspectiveCamera(42, box.width / box.height, 0.1, 100)
+    camera.position.set(9, 12, 13); camera.lookAt(0, 0, 0); camera.updateMatrixWorld()
+    const ndc = new THREE.Vector3(x, y, z).project(camera)
+    return { x: box.x + (ndc.x * 0.5 + 0.5) * box.width, y: box.y + (-ndc.y * 0.5 + 0.5) * box.height }
+  }
+  const clickWorld = async (x, y, z) => {
+    const point = toScreen(x, y, z)
+    assert.ok(point.x > box.x && point.x < box.x + box.width && point.y > box.y && point.y < box.y + box.height, `world point ${x},${y},${z} must be inside the canvas`)
+    await page.mouse.click(point.x, point.y)
+  }
+  await clickWorld(2, 0, 3)
+  await clickWorld(4, 0, 3)
+  assert.equal((await page.locator('.selection small').innerText()).includes('4, 3'), true, 'the freshly built tower should be selected')
+  for (const height of [0.9, 0.5, 0.25]) await clickWorld(2, height, 3)
+  assert.equal((await page.locator('.selection small').innerText()).includes('2, 3'), true, 'an already built tower must be selectable again')
+  assert.equal(await page.getByRole('button', { name: '升级' }).isVisible(), true)
+  assert.equal(await page.getByRole('button', { name: '出售' }).isVisible(), true)
+
+  await page.getByRole('button', { name: '音乐关' }).click()
+  await page.getByRole('button', { name: '启动下一波进攻' }).click()
+  assert.equal(await page.getByRole('button', { name: '暂停' }).isEnabled(), true)
+  await page.getByRole('button', { name: '暂停' }).click()
+  assert.equal(await page.getByRole('button', { name: '继续' }).isVisible(), true)
+  await page.getByRole('button', { name: '存档' }).click()
   await page.reload()
-  assert.equal(await page.getByText('\u672c\u5730\u5b58\u6863\u5df2\u6062\u590d\u3002').isVisible(), true)
+  assert.equal(await page.getByText('本地存档已恢复。').isVisible(), true)
   assert.equal((await page.locator('.stats').innerText()).includes('1/6'), true)
   assert.deepEqual(errors, [])
   await browser.close()

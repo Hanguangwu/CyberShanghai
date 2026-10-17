@@ -5,12 +5,12 @@ export type Tower = { id: number; x: number; z: number; type: TowerType; level: 
 
 export const pathLength = 16
 export const towerCost = (type: TowerType) => TOWER_DATA[type].cost
-export const upgradeCost = (tower: Tower) => Math.round(TOWER_DATA[tower.type].cost * (tower.level === 1 ? 0.6 : 0.9))
-export const sellValue = (tower: Tower) => Math.round(TOWER_DATA[tower.type].cost * (0.7 + (tower.level - 1) * 0.3))
+export const upgradeCost = (tower: Tower) => 100 * tower.level
+export const sellValue = (tower: Tower) => 100 * tower.level
 export const canBuildAt = (x: number, z: number, towers: Tower[]) => x >= -1 && x <= 6 && Math.abs(z) >= 2 && Math.abs(z) <= 6 && !towers.some((tower) => Math.hypot(tower.x - x, tower.z - z) < 1.1)
-export const spawnWave = (wave: number, hpMultiplier = 1): Enemy[] => {
+export const spawnWave = (wave: number, hpMultiplier = 1, countMultiplier = 1): Enemy[] => {
   const enemies: Enemy[] = []
-  const count = 3 + wave * 2
+  const count = Math.ceil((3 + wave * 2) * countMultiplier)
   for (let i = 0; i < count; i += 1) {
     const types: EnemyType[] = ['boar', 'armored', 'charger', 'repair', 'disruptor']
     const type = wave === 1 ? 'boar' : types[(i + wave) % types.length]

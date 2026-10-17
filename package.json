@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "typecheck": "tsc -b",
-    "test": "node --experimental-strip-types scripts/test-rules.ts",
+    "test": "node --experimental-strip-types scripts/test-rules.ts && node --experimental-strip-types scripts/test-models.ts",
     "test:e2e": "node scripts/e2e.mjs"
   },
   "dependencies": {

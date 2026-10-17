@@ -1,5 +1,6 @@
 declare module 'react' {
   export type ReactNode = unknown
+  export type CSSProperties = Record<string, string | number>
   export const StrictMode: (props: { children?: unknown }) => unknown
   export function useEffect(effect: () => void | (() => void), deps?: readonly unknown[]): void
   export function useRef<T>(value: T | null): { current: T | null }
