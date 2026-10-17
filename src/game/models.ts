@@ -1,16 +1,17 @@
 import { Box3, Color, Group, Material, Mesh, MeshStandardMaterial, Object3D, Vector3 } from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import type { EnemyType, TowerType } from './data'
+import { ENEMY_MODEL_FILES, FIELD_SIZE, MAP_HEIGHT_RATIO, MAP_MODEL_FILE, TOWER_DATA, TOWER_MODEL_FILES, type EnemyType, type TowerType } from './data.ts'
 
-export type GameModels = { towerVariants: Group[]; boar: Group; centerTower: Group }
+/** 地图：外层 root 留在原点，width/depth 是缩放后的实际占地，供地面/网格对齐。 */
+export type FittedMap = { group: Group; width: number; depth: number }
+export type GameModels = { tower: Record<TowerType, Group>; enemy: Record<EnemyType, Group>; centerTower: Group; map: FittedMap }
 
 const TOWER_HEIGHT = 2
 const CENTER_TOWER_HEIGHT = 2.4
-const BOAR_HEIGHT = 0.9
-const BOSS_SCALE = 1.6
-const TOWER_FILES = ['flametower_pbr.glb', 'flametower_shaded.glb', 'plantstower_pbr.glb', 'plantstower_shaded.glb']
+// 三种敌人各自的成品高度：工蜂虫低矮、巡逻机器人齐人高、鲸鱼 Boss 明显压场。
+const ENEMY_HEIGHTS: Record<EnemyType, number> = { beetle: 0.62, robot: 1.05, boss: 1.7 }
 const CENTER_TOWER_FILE = 'pioche.glb'
-const ENEMY_TINTS: Partial<Record<EnemyType, string>> = { boss: '#f3ca58', repair: '#6ee58f' }
+const ENEMY_TINTS: Partial<Record<EnemyType, string>> = { boss: '#f3ca58' }
 let cache: Promise<GameModels> | null = null
 
 export function loadGameModels(): Promise<GameModels> {
@@ -20,16 +21,24 @@ export function loadGameModels(): Promise<GameModels> {
 
 async function load(): Promise<GameModels> {
   const loader = new GLTFLoader()
-  const [towerScenes, boarGltf, centerGltf] = await Promise.all([
-    Promise.all(TOWER_FILES.map((file) => loader.loadAsync(`models/${file}`))),
-    loader.loadAsync('models/patrol-robot.glb'),
+  const towerEntries = Object.entries(TOWER_MODEL_FILES) as [TowerType, string][]
+  const enemyEntries = Object.entries(ENEMY_MODEL_FILES) as [EnemyType, string][]
+  const [towerScenes, enemyScenes, centerGltf, mapGltf] = await Promise.all([
+    Promise.all(towerEntries.map(([, file]) => loader.loadAsync(`models/${file}`))),
+    Promise.all(enemyEntries.map(([, file]) => loader.loadAsync(`models/${file}`))),
     loader.loadAsync(`models/${CENTER_TOWER_FILE}`),
+    loader.loadAsync(`models/${MAP_MODEL_FILE}`),
   ])
-  const towerVariants = towerScenes.map((gltf) => normalizeModel(gltf.scene, '#cfe4ef', TOWER_HEIGHT))
+  const tower = {} as Record<TowerType, Group>
+  // 兜底色用塔自身的主题色：万一某个模型缺材质，也不会退化成黑白。
+  towerEntries.forEach(([type], index) => { tower[type] = normalizeModel(towerScenes[index].scene, TOWER_DATA[type].color, TOWER_HEIGHT) })
+  const enemy = {} as Record<EnemyType, Group>
+  enemyEntries.forEach(([type], index) => { enemy[type] = normalizeModel(enemyScenes[index].scene, '#c8722f', ENEMY_HEIGHTS[type]) })
   return {
-    towerVariants,
-    boar: normalizeModel(boarGltf.scene, '#c8722f', BOAR_HEIGHT),
+    tower,
+    enemy,
     centerTower: normalizeModel(centerGltf.scene, '#b9d2e0', CENTER_TOWER_HEIGHT),
+    map: fitMapToField(mapGltf.scene, FIELD_SIZE, MAP_HEIGHT_RATIO),
   }
 }
 
@@ -90,17 +99,43 @@ function groundAndScale(source: Object3D, targetHeight: number): Group {
   return root
 }
 
+/**
+ * 把地图模型「装填」进战场基准区域。
+ *
+ * 缩放倍率直接由实测包围盒推导（等比取较小者），所以模型在 Blender 里重新导出、尺寸变了也不用改任何数字：
+ * 代码只关心「它要盖住 FIELD_SIZE」，不关心它原始是多大。等比保证不变形。
+ *
+ * heightRatio 单独压 Y：地图等比放大后楼体会高过炮塔，压扁后既保留城市层次又不遮挡战场。
+ * 和 normalizeModel 一样，位移写在内部 pivot 上，外层 root 留在原点，调用方可以自由摆放。
+ */
+export function fitMapToField(source: Object3D, field: { x: number; z: number }, heightRatio: number): FittedMap {
+  const raw = new Box3().setFromObject(source)
+  const rawSize = new Vector3()
+  raw.getSize(rawSize)
+  const scale = Math.min(field.x / rawSize.x, field.z / rawSize.z)
+  const pivot = new Group()
+  pivot.add(source)
+  pivot.scale.set(scale, scale * heightRatio, scale)
+  const fitted = new Box3().setFromObject(pivot)
+  const center = new Vector3()
+  fitted.getCenter(center)
+  pivot.position.set(-center.x, -fitted.min.y, -center.z)
+  const root = new Group()
+  root.add(pivot)
+  return { group: root, width: rawSize.x * scale, depth: rawSize.z * scale }
+}
+
 export function instanceModel(model: Group, scale = 1): Group {
   const clone = model.clone(true); if (scale !== 1) clone.scale.multiplyScalar(scale); return clone
 }
 
 export function towerModelFor(models: GameModels, type: TowerType): Group {
-  const index: Record<TowerType, number> = { pulse: 0, chain: 1, frost: 2, rail: 3, poison: 2, emp: 1 }
-  return models.towerVariants[index[type] % models.towerVariants.length]
+  return models.tower[type]
 }
 
-export function createBoar(model: Group, type: EnemyType): Group {
-  const clone = instanceModel(model, type === 'boss' ? BOSS_SCALE : 1); clone.rotation.y = Math.PI / 2
+/** 敌人生成：旋转 90° 让模型长轴朝向行进方向（+X），Boss 额外叠一层金色自发光便于辨认。 */
+export function createEnemy(models: GameModels, type: EnemyType): Group {
+  const clone = instanceModel(models.enemy[type]); clone.rotation.y = Math.PI / 2
   const tint = ENEMY_TINTS[type]
   if (tint) clone.traverse((node) => { if (node instanceof Mesh) node.material = tintedMaterial(node.material, tint) })
   return clone

@@ -23,11 +23,22 @@ try {
   const errors = []
   page.on('pageerror', (error) => errors.push(error.message))
 
-  // 模型加载必须在真实浏览器里被验证：pioche.glb 是本次接入的中央主塔模型。
+  // 模型加载必须在真实浏览器里被验证：六种塔、两种敌人 + Boss、以及真实地图。
   const waitForModel = (file) => page.waitForResponse((response) => response.url().endsWith(file) && response.status() === 200, { timeout: 30000 })
-  const centerTowerModel = waitForModel('pioche.glb')
-  const towerModel = waitForModel('flametower_pbr.glb')
-  const enemyModel = waitForModel('patrol-robot.glb')
+  const modelFiles = [
+    'pioche.glb',
+    'machinegun_pbr.glb',
+    'flametower_pbr.glb',
+    'ice_tower_pbr.glb',
+    'rail_gun_pbr.glb',
+    'gas_tower_pbr.glb',
+    'hacker_tower_pbr.glb',
+    'army_beetle_pbr.glb',
+    'patrol-robot.glb',
+    'deepseek_whale_pbr.glb',
+    'mapv0_pbr.glb',
+  ]
+  const modelLoads = modelFiles.map(waitForModel)
 
   await page.goto('http://127.0.0.1:4173/')
   assert.equal(await page.getByRole('heading', { name: '赛博沪上：野猪围城' }).isVisible(), true)
@@ -45,7 +56,7 @@ try {
   await page.getByRole('button', { name: '进入战斗' }).click()
   assert.equal(await page.locator('.card-overlay').count(), 0, 'confirming the card must dismiss the overlay')
 
-  await Promise.all([centerTowerModel, towerModel, enemyModel])
+  await Promise.all(modelLoads)
 
   // 回归：已建造的炮塔必须能再次被选中（否则无法升级/出售）。
   const canvas = page.locator('canvas')

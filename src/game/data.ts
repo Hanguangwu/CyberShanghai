@@ -1,5 +1,5 @@
 export type TowerType = 'pulse' | 'chain' | 'frost' | 'rail' | 'poison' | 'emp'
-export type EnemyType = 'boar' | 'armored' | 'charger' | 'repair' | 'disruptor' | 'boss'
+export type EnemyType = 'beetle' | 'robot' | 'boss'
 
 export const TOWER_DATA: Record<TowerType, { label: string; cost: number; range: number; damage: number; cooldown: number; color: string; note: string }> = {
   pulse: { label: '脉冲炮', cost: 100, range: 5.3, damage: 100, cooldown: 0.7, color: '#35d5e8', note: '稳定单体输出' },
@@ -10,13 +10,37 @@ export const TOWER_DATA: Record<TowerType, { label: string; cost: number; range:
   emp: { label: '黑客塔', cost: 600, range: 8, damage: 0, cooldown: 3, color: '#f59b5f', note: 'EMP 沉默机械敌人' },
 }
 
+// 数值取自 docs/所需 3D 模型.md：工蜂虫=基础群怪，巡逻机器人=重甲机械，深海巨鲸=最终 Boss。
+// damage 是“泄漏伤害”（敌人走到核心时对核心造成的伤害）。
 export const ENEMY_DATA: Record<EnemyType, { label: string; hp: number; speed: number; armor: number; reward: number; damage: number }> = {
-  boar: { label: '锈蚀小野猪', hp: 100, speed: 2.8, armor: 0, reward: 100, damage: 100 },
-  armored: { label: '装甲野猪', hp: 300, speed: 1.6, armor: 0.25, reward: 200, damage: 100 },
-  charger: { label: '冲锋野猪', hp: 200, speed: 3.8, armor: 0.1, reward: 200, damage: 200 },
-  repair: { label: '维修母猪', hp: 300, speed: 1.4, armor: 0.05, reward: 300, damage: 100 },
-  disruptor: { label: '干扰野猪', hp: 200, speed: 2.2, armor: 0.15, reward: 300, damage: 200 },
-  boss: { label: '黄浦江巨兽', hp: 5000, speed: 0.9, armor: 0.35, reward: 1000, damage: 300 },
+  beetle: { label: '工蜂虫', hp: 80, speed: 3, armor: 0, reward: 80, damage: 40 },
+  robot: { label: '巡逻机器人', hp: 300, speed: 1.8, armor: 0.25, reward: 220, damage: 100 },
+  boss: { label: '深海巨鲸', hp: 5000, speed: 0.9, armor: 0.35, reward: 1000, damage: 300 },
+}
+
+// 敌人各自的 GLB 模型。army_beetle / deepseek_whale 只有 _pbr 带贴图信息，patrol-robot 仅一个版本。
+export const ENEMY_MODEL_FILES: Record<EnemyType, string> = {
+  beetle: 'army_beetle_pbr.glb',
+  robot: 'patrol-robot.glb',
+  boss: 'deepseek_whale_pbr.glb',
+}
+
+// 战场基准区域（X × Z）。地图模型会「装填」进这个范围，地面与网格再跟着地图的实际尺寸收缩。
+export const FIELD_SIZE = { x: 22, z: 18 }
+export const MAP_MODEL_FILE = 'mapv0_pbr.glb'
+// 地图等比放大后最高点会从 0.34 变成 ~3.2，高过只有 2 单位高的炮塔；压扁一半保留城市层次又不遮挡战场。
+export const MAP_HEIGHT_RATIO = 0.5
+
+// 六种防御塔各自的专属模型（public/models/）。全部使用 _pbr 版本：
+// 它们带 baseColorTexture + metallicRoughnessTexture，配合场景 environment 才有正确反射（_shaded 依赖自发光通道）。
+// 中央塔位的 pioche.glb 是例外，见 CENTER_TOWER_SLOT。
+export const TOWER_MODEL_FILES: Record<TowerType, string> = {
+  pulse: 'machinegun_pbr.glb',
+  chain: 'flametower_pbr.glb',
+  frost: 'ice_tower_pbr.glb',
+  rail: 'rail_gun_pbr.glb',
+  poison: 'gas_tower_pbr.glb',
+  emp: 'hacker_tower_pbr.glb',
 }
 
 export const MAX_WAVES = 6
