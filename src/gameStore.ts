@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { ENEMY_DATA, TOWER_DATA, type TowerType } from './game/data.ts'
-import { canBuildAt, pathLength, sellValue, spawnWave, towerCost, towerDistanceToEnemy, upgradeCost, type Enemy, type Tower } from './game/rules.ts'
+import { canBuildAt, sellValue, spawnWave, towerCost, towerDistanceToEnemy, upgradeCost, type Enemy, type Tower } from './game/rules.ts'
+import { getWavePath, pointAtDistance } from './game/campusMap.ts'
 import { getLevel, type LevelId } from './game/levels.ts'
 import { drawOpeningCards, getCard, type CardModifier } from './game/cards.ts'
 
@@ -49,7 +50,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     const level = getLevel(state.levelId)
     if (state.cardPhase !== 'ready' || state.running || state.levelComplete || state.core <= 0 || state.wave >= level.waves) return state
     const wave = state.wave + 1
-    return { wave, running: true, paused: false, enemies: spawnWave(wave, level.enemyHpMultiplier * (state.cardModifiers.enemyHpMultiplier ?? 1), state.cardModifiers.enemyCountMultiplier ?? 1), message: `第 ${wave} 波入侵开始。` }
+    return { wave, running: true, paused: false, enemies: spawnWave(wave, level.enemyHpMultiplier * (state.cardModifiers.enemyHpMultiplier ?? 1), state.cardModifiers.enemyCountMultiplier ?? 1, getWavePath(wave)), message: `第 ${wave} 波入侵开始。` }
   }),
   advanceLevel: () => set((state) => {
     if (!state.levelComplete || state.levelId >= 3) return state
@@ -98,13 +99,14 @@ export const useGameStore = create<GameState>((set, get) => ({
     const enemies = state.enemies.map((enemy) => {
       const poisonDamage = enemy.poisonUntil > 0 ? 3 * seconds : 0
       const movement = enemy.stunnedUntil > 0 ? 0 : ENEMY_DATA[enemy.type].speed * level.enemySpeedMultiplier * (state.cardModifiers.enemySpeedMultiplier ?? 1) * seconds * (enemy.slowUntil > 0 ? 0.65 : 1)
-      return { ...enemy, hp: enemy.hp - poisonDamage, progress: enemy.progress + movement, slowUntil: Math.max(0, enemy.slowUntil - seconds), stunnedUntil: Math.max(0, enemy.stunnedUntil - seconds), poisonUntil: Math.max(0, enemy.poisonUntil - seconds) }
+      const pathProgress = enemy.pathProgress + movement
+      return { ...enemy, hp: enemy.hp - poisonDamage, pathProgress, position: pointAtDistance(enemy.path, pathProgress), slowUntil: Math.max(0, enemy.slowUntil - seconds), stunnedUntil: Math.max(0, enemy.stunnedUntil - seconds), poisonUntil: Math.max(0, enemy.poisonUntil - seconds) }
     })
     const towers = state.towers.map((tower) => ({ ...tower, cooldown: Math.max(0, tower.cooldown - seconds) }))
     for (const tower of towers) {
       if (tower.cooldown > 0) continue
       const config = TOWER_DATA[tower.type]
-      const targets = enemies.filter((enemy) => enemy.hp > 0 && towerDistanceToEnemy(tower, enemy) <= config.range).sort((a, b) => b.progress - a.progress)
+      const targets = enemies.filter((enemy) => enemy.hp > 0 && towerDistanceToEnemy(tower, enemy) <= config.range).sort((a, b) => b.pathProgress - a.pathProgress)
       const target = targets[0]
       if (!target) continue
       const damage = config.damage * (1 + (tower.level - 1) * 0.35) * (state.cardModifiers.towerDamageMultiplier ?? 1) * (1 - ENEMY_DATA[target.type].armor)
@@ -115,12 +117,12 @@ export const useGameStore = create<GameState>((set, get) => ({
       if (tower.type === 'poison') target.poisonUntil = 5
       if (tower.type === 'emp') target.stunnedUntil = 1.5
       tower.cooldown = config.cooldown
-      shots.push({ id: Date.now() + tower.id, fromX: tower.x, fromZ: tower.z, toX: -8 + target.progress, toZ: 0, color: config.color, ttl: 0.14 })
+      shots.push({ id: Date.now() + tower.id, fromX: tower.x, fromZ: tower.z, toX: target.position.x, toZ: target.position.z, color: config.color, ttl: 0.14 })
     }
-    const escaped = enemies.filter((enemy) => enemy.progress >= pathLength && enemy.hp > 0)
+    const escaped = enemies.filter((enemy) => enemy.pathProgress >= enemy.path.totalLength && enemy.hp > 0)
     const defeated = enemies.filter((enemy) => enemy.hp <= 0)
     credits = roundCredits(credits + defeated.reduce((sum, enemy) => sum + ENEMY_DATA[enemy.type].reward * (state.cardModifiers.rewardMultiplier ?? 1), 0))
-    const alive = enemies.filter((enemy) => enemy.hp > 0 && enemy.progress < pathLength)
+    const alive = enemies.filter((enemy) => enemy.hp > 0 && enemy.pathProgress < enemy.path.totalLength)
     const core = Math.max(0, Math.round(state.core - escaped.reduce((sum, enemy) => sum + ENEMY_DATA[enemy.type].damage * (state.cardModifiers.enemyDamageMultiplier ?? 1), 0)))
     if (core === 0) return { core, running: false, enemies: [], shots, message: '核心能量归零，防线失守。' }
     if (alive.length === 0) {

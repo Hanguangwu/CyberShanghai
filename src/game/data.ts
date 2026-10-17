@@ -26,10 +26,10 @@ export const ENEMY_MODEL_FILES: Record<EnemyType, string> = {
 }
 
 // 战场基准区域（X × Z）。地图模型会「装填」进这个范围，地面与网格再跟着地图的实际尺寸收缩。
-export const FIELD_SIZE = { x: 22, z: 18 }
+export const FIELD_SIZE = { x: 100, z: 100 }
 export const MAP_MODEL_FILE = 'mapv0_pbr.glb'
 // 地图等比放大后最高点会从 0.34 变成 ~3.2，高过只有 2 单位高的炮塔；压扁一半保留城市层次又不遮挡战场。
-export const MAP_HEIGHT_RATIO = 0.5
+export const MAP_HEIGHT_RATIO = 0.1
 
 // 六种防御塔各自的专属模型（public/models/）。全部使用 _pbr 版本：
 // 它们带 baseColorTexture + metallicRoughnessTexture，配合场景 environment 才有正确反射（_shaded 依赖自发光通道）。
@@ -47,4 +47,4 @@ export const MAX_WAVES = 6
 
 // 地图中央的“主塔位”：建在此坐标上的炮塔使用 pioche.glb 作为专属模型，其余塔位沿用常规变体。
 // 想换位置只改这一行即可。
-export const CENTER_TOWER_SLOT = { x: 2, z: 2 }
+export const CENTER_TOWER_SLOT = { x: 44, z: 0 }

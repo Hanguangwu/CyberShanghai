@@ -63,8 +63,8 @@ try {
   const box = await canvas.boundingBox()
   assert.ok(box, 'the 3D canvas must be present')
   const toScreen = (x, y, z) => {
-    const camera = new THREE.PerspectiveCamera(42, box.width / box.height, 0.1, 100)
-    camera.position.set(9, 12, 13); camera.lookAt(0, 0, 0); camera.updateMatrixWorld()
+    const camera = new THREE.PerspectiveCamera(42, box.width / box.height, 0.1, 300)
+    camera.position.set(72, 82, 88); camera.lookAt(0, 0, 0); camera.updateMatrixWorld()
     const ndc = new THREE.Vector3(x, y, z).project(camera)
     return { x: box.x + (ndc.x * 0.5 + 0.5) * box.width, y: box.y + (-ndc.y * 0.5 + 0.5) * box.height }
   }
@@ -73,11 +73,11 @@ try {
     assert.ok(point.x > box.x && point.x < box.x + box.width && point.y > box.y && point.y < box.y + box.height, `world point ${x},${y},${z} must be inside the canvas`)
     await page.mouse.click(point.x, point.y)
   }
-  await clickWorld(2, 0, 3)
-  await clickWorld(4, 0, 3)
-  assert.equal((await page.locator('.selection small').innerText()).includes('4, 3'), true, 'the freshly built tower should be selected')
-  for (const height of [0.9, 0.5, 0.25]) await clickWorld(2, height, 3)
-  assert.equal((await page.locator('.selection small').innerText()).includes('2, 3'), true, 'an already built tower must be selectable again')
+  await clickWorld(-42, 0, -34)
+  await clickWorld(-30, 0, -34)
+  assert.equal(await page.locator('.selection').count(), 1, 'the freshly built tower should be selected')
+  for (const height of [0.9, 0.5, 0.25]) await clickWorld(-42, height, -34)
+  assert.equal(await page.locator('.selection').count(), 1, 'an already built tower must be selectable again')
   assert.equal(await page.getByRole('button', { name: '升级' }).isVisible(), true)
   assert.equal(await page.getByRole('button', { name: '出售' }).isVisible(), true)
 

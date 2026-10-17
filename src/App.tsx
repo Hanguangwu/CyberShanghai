@@ -6,6 +6,8 @@ import { LEVELS } from './game/levels'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 import { createEnemy, instanceModel, loadGameModels, towerModelFor, type GameModels } from './game/models'
 import { MusicController } from './game/music'
+import { CAMPUS_CORE } from './game/campusMap'
+import { createCampusDecoration } from './game/campusDecoration'
 import { useGameStore } from './gameStore'
 
 function App() {
@@ -31,7 +33,7 @@ function App() {
     const mount = mountRef.current
     if (!mount) return
     const scene = new THREE.Scene(); scene.background = new THREE.Color(level.skyColor)
-    const camera = new THREE.PerspectiveCamera(42, mount.clientWidth / mount.clientHeight, 0.1, 100); camera.position.set(9, 12, 13); camera.lookAt(0, 0, 0)
+    const camera = new THREE.PerspectiveCamera(42, mount.clientWidth / mount.clientHeight, 0.1, 300); camera.position.set(72, 82, 88); camera.lookAt(0, 0, 0)
     const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' }); renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); renderer.setSize(mount.clientWidth, mount.clientHeight); mount.appendChild(renderer.domElement)
     scene.add(new THREE.HemisphereLight('#bcefff', '#081018', 2.2)); const keyLight = new THREE.DirectionalLight('#ff4ca0', 3); keyLight.position.set(-5, 10, 5); scene.add(keyLight)
     // PBR 材质的金属表面需要环境贴图才有反射，否则 metalness≈1 会渲染成纯黑（Blender 里看起来有颜色，Three.js 里没有）。
@@ -39,17 +41,16 @@ function App() {
     const world = new THREE.Group(); worldRef.current = world; scene.add(world)
     const ground = new THREE.Mesh(new THREE.PlaneGeometry(FIELD_SIZE.x, FIELD_SIZE.z), new THREE.MeshStandardMaterial({ color: '#0b2430', roughness: 0.92 })); ground.rotation.x = -Math.PI / 2; world.add(ground)
     // 网格尺寸会在地图加载后跟着地图实际占地收缩（见下方 resizeField）。
-    let grid = new THREE.GridHelper(FIELD_SIZE.x, FIELD_SIZE.x, '#1a8290', '#123b4a'); grid.position.y = 0.015; world.add(grid)
+    let grid = new THREE.GridHelper(FIELD_SIZE.x, 50, '#1a8290', '#123b4a'); grid.position.y = 0.015; world.add(grid)
     const resizeField = (width: number, depth: number) => {
       ground.geometry.dispose(); ground.geometry = new THREE.PlaneGeometry(width, depth)
       world.remove(grid); grid.geometry.dispose()
       const span = Math.max(width, depth)
-      grid = new THREE.GridHelper(span, Math.round(span), '#1a8290', '#123b4a'); grid.position.y = 0.015; world.add(grid)
+      grid = new THREE.GridHelper(span, 50, '#1a8290', '#123b4a'); grid.position.y = 0.015; world.add(grid)
     }
     // 路面与车道标记按敌人实际路径（x 从 -8 到 8）居中，长度略短于地图，避免探出地图边缘。
-    const road = new THREE.Mesh(new THREE.BoxGeometry(17.4, 0.09, 2.2), new THREE.MeshStandardMaterial({ color: '#25283c', emissive: '#161a2b', emissiveIntensity: 0.5 })); road.position.set(0, 0.08, 0); world.add(road)
-    for (let x = -8; x <= 8; x += 2) { const lane = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.03, 0.05), new THREE.MeshBasicMaterial({ color: '#f3ca58' })); lane.position.set(x, 0.14, 0); world.add(lane) }
-    const core = new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.9, 1.1, 6), new THREE.MeshStandardMaterial({ color: '#ff4ca0', emissive: '#c32374', emissiveIntensity: 2 })); core.position.set(7, 0.6, 0); world.add(core)
+    world.add(createCampusDecoration())
+    const core = new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.9, 1.1, 6), new THREE.MeshStandardMaterial({ color: '#ff4ca0', emissive: '#c32374', emissiveIntensity: 2 })); core.position.set(CAMPUS_CORE.x, 0.6, CAMPUS_CORE.z); world.add(core)
     // 标出地图中央的主塔位，让玩家一眼看到 pioche.glb 专属塔应该建在哪里。
     const centerSlot = new THREE.Mesh(new THREE.RingGeometry(0.72, 0.98, 28), new THREE.MeshBasicMaterial({ color: '#35d5e8', transparent: true, opacity: 0.5, side: THREE.DoubleSide })); centerSlot.rotation.x = -Math.PI / 2; centerSlot.position.set(CENTER_TOWER_SLOT.x, 0.03, CENTER_TOWER_SLOT.z); world.add(centerSlot)
     // 真实地图：加载完成后贴地放到世界原点，并把地面/网格收缩到地图的实际占地。
@@ -57,16 +58,19 @@ function App() {
     let cancelled = false
     loadGameModels().then((loaded) => {
       if (cancelled) return
-      loaded.map.group.position.y = -0.02
-      world.add(loaded.map.group)
-      resizeField(loaded.map.width, loaded.map.depth)
+      // The imported map remains an optional asset for later campus.glb integration.
+      // Do not add its ground mesh here: the gameplay plane must stay the single raycast surface.
+      loaded.map.group.visible = false
     }).catch(() => undefined)
     const dynamic = new THREE.Group(); world.add(dynamic); world.userData.dynamic = dynamic
     const raycaster = new THREE.Raycaster(); const pointer = new THREE.Vector2(); let dragging = false; let moved = false; let downX = 0; let downY = 0; let lastX = 0; let lastY = 0
+    let orbitYaw = 0.68; let orbitPitch = 0.78; let orbitRadius = 132
+    const updateCamera = () => { const horizontal = Math.cos(orbitPitch) * orbitRadius; camera.position.set(Math.sin(orbitYaw) * horizontal, Math.sin(orbitPitch) * orbitRadius, Math.cos(orbitYaw) * horizontal); camera.lookAt(0, 0, 0) }
+    updateCamera()
     const onPointerDown = (event: PointerEvent) => { dragging = true; moved = false; downX = event.clientX; downY = event.clientY; lastX = event.clientX; lastY = event.clientY; renderer.domElement.setPointerCapture(event.pointerId) }
-    const onPointerMove = (event: PointerEvent) => { if (!dragging) return; if (Math.hypot(event.clientX - downX, event.clientY - downY) > 6) moved = true; camera.position.applyAxisAngle(new THREE.Vector3(0, 1, 0), (event.clientX - lastX) * 0.008); camera.position.y = Math.max(5, Math.min(22, camera.position.y + (event.clientY - lastY) * 0.04)); camera.lookAt(0, 0, 0); lastX = event.clientX; lastY = event.clientY }
+    const onPointerMove = (event: PointerEvent) => { if (!dragging) return; if (Math.hypot(event.clientX - downX, event.clientY - downY) > 6) moved = true; orbitYaw -= (event.clientX - lastX) * 0.008; orbitPitch = Math.max(0.22, Math.min(1.38, orbitPitch - (event.clientY - lastY) * 0.008)); updateCamera(); lastX = event.clientX; lastY = event.clientY }
     const onPointerUp = (event: PointerEvent) => { dragging = false; renderer.domElement.releasePointerCapture(event.pointerId) }
-    const onWheel = (event: WheelEvent) => { event.preventDefault(); camera.position.multiplyScalar(event.deltaY > 0 ? 1.06 : 0.94); camera.position.clampLength(7, 28); camera.lookAt(0, 0, 0) }
+    const onWheel = (event: WheelEvent) => { event.preventDefault(); orbitRadius = Math.max(35, Math.min(180, orbitRadius * (event.deltaY > 0 ? 1.06 : 0.94))); updateCamera() }
     const onClick = (event: MouseEvent) => {
       // 拖动过镜头就不算点击；旧实现用 lastX 判断，而 lastX 在 pointermove 里被不断刷新，导致拖动后仍会误建造。
       if (moved) return
@@ -93,8 +97,8 @@ function App() {
     if (!dynamic) return
     dynamic.clear()
     const models = modelsRef.current
-    towers.forEach((tower) => { const isCenterSlot = tower.x === CENTER_TOWER_SLOT.x && tower.z === CENTER_TOWER_SLOT.z; const group = models ? instanceModel(isCenterSlot ? models.centerTower : towerModelFor(models, tower.type), 0.8 + tower.level * 0.08) : new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.55, 0.8, 8), new THREE.MeshStandardMaterial({ color: TOWER_DATA[tower.type].color })); group.position.set(tower.x, 0, tower.z); group.userData.towerId = tower.id; dynamic.add(group) })
-    enemies.forEach((enemy) => { const unit = models ? createEnemy(models, enemy.type) : new THREE.Mesh(new THREE.DodecahedronGeometry(enemy.type === 'boss' ? 0.7 : 0.38, 0), new THREE.MeshStandardMaterial({ color: '#a93649' })); unit.position.set(-8 + enemy.progress, 0, 0); dynamic.add(unit) })
+    towers.forEach((tower) => { const isCenterSlot = tower.x === CENTER_TOWER_SLOT.x && tower.z === CENTER_TOWER_SLOT.z; const group = models ? instanceModel(isCenterSlot ? models.centerTower : towerModelFor(models, tower.type), 1 + tower.level * 0.1) : new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.7, 1.1, 8), new THREE.MeshStandardMaterial({ color: TOWER_DATA[tower.type].color })); group.position.set(tower.x, 0, tower.z); group.userData.towerId = tower.id; dynamic.add(group) })
+    enemies.forEach((enemy) => { const unit = models ? createEnemy(models, enemy.type) : new THREE.Mesh(new THREE.DodecahedronGeometry(enemy.type === 'boss' ? 0.7 : 0.38, 0), new THREE.MeshStandardMaterial({ color: '#a93649' })); unit.position.set(enemy.position.x, 0.22, enemy.position.z); dynamic.add(unit) })
     shots.forEach((shot) => { const geometry = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(shot.fromX, 0.8, shot.fromZ), new THREE.Vector3(shot.toX, 0.65, shot.toZ)]); dynamic.add(new THREE.Line(geometry, new THREE.LineBasicMaterial({ color: shot.color, transparent: true, opacity: Math.min(1, shot.ttl * 9) }))) })
   }, [towers, enemies, shots, selectedId, modelsReady])
 

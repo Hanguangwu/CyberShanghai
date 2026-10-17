@@ -6,10 +6,10 @@ import { ENEMY_MODEL_FILES, FIELD_SIZE, MAP_HEIGHT_RATIO, MAP_MODEL_FILE, TOWER_
 export type FittedMap = { group: Group; width: number; depth: number }
 export type GameModels = { tower: Record<TowerType, Group>; enemy: Record<EnemyType, Group>; centerTower: Group; map: FittedMap }
 
-const TOWER_HEIGHT = 2
-const CENTER_TOWER_HEIGHT = 2.4
+const TOWER_HEIGHT = 3.2
+const CENTER_TOWER_HEIGHT = 3.8
 // 三种敌人各自的成品高度：工蜂虫低矮、巡逻机器人齐人高、鲸鱼 Boss 明显压场。
-const ENEMY_HEIGHTS: Record<EnemyType, number> = { beetle: 0.62, robot: 1.05, boss: 1.7 }
+const ENEMY_HEIGHTS: Record<EnemyType, number> = { beetle: 1.2, robot: 2, boss: 3.4 }
 const CENTER_TOWER_FILE = 'pioche.glb'
 const ENEMY_TINTS: Partial<Record<EnemyType, string>> = { boss: '#f3ca58' }
 let cache: Promise<GameModels> | null = null
