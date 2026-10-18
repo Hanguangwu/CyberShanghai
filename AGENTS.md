@@ -2,41 +2,45 @@
 
 ## 项目目标
 
-本项目是《赛博沪上：野猪围城》浏览器 3D 塔防 MVP。编码代理应优先交付可运行、可验证、性能稳定的增量版本，而不是只生成设计代码或一次性铺开未验证的大量功能。
+本项目是《赛博沪上：保卫上科大校园》浏览器 3D 塔防 MVP。编码代理应优先交付可运行、可验证、性能稳定的增量版本，而不是只生成设计代码或一次性铺开未验证的大量功能。
 
 核心目标：
 
-- 使用 Vite + React + TypeScript + Three.js + Zustand。
-- 固定赛博上海关卡，支持模块化护城河改造。
-- 程序化占位模型为主，少量 GLB 重点模型为辅。
-- 完成塔、防御、敌人、波次、Boss、结算和本地存档闭环。
+- 使用 Vite + React + TypeScript + Three.js + Zustand（pnpm）。
+- 固定上科大校园关卡：多条道路路线、路侧建造点，敌人沿路线进攻核心。
+- 3D 资产以 HyperAI 生成的 GLB 模型为主，背景音乐为本地 MP3。
+- 完成 6 类塔、3 类敌人（虫子、机器人、鲸鱼 Boss）、8 波战斗、开局命运盲盒、结算和本地存档闭环。
 - 支持本地开发，并可部署到 GitHub Pages。
 
 ## 架构原则
 
 1. 游戏规则与渲染解耦。核心规则必须能够脱离 DOM 和 Three.js 单独测试。
 2. React 负责 UI；Three.js 负责 3D 视图；Zustand 负责跨系统状态。
-3. 配置数据放在 `src/game/data/`，不要把平衡数值散落在组件和系统代码中。
-4. 地图状态是明确的数据模型，Three.js 对象只是地图状态的可视化结果。
-5. 所有地图改造都必须验证出生点到核心的可达性；非法操作必须回滚。
+3. 配置数据集中在 `src/game/data.ts`、`levels.ts`、`cards.ts`，不要把平衡数值散落在组件和系统代码中。
+4. 地图路线与建造点是明确的数据模型（`campusMap.ts`），Three.js 对象只是它的可视化结果。
+5. 建造必须通过 `canBuildAt` 校验（路侧建造点、与既有塔保持间距）；非法操作必须被拒绝且不破坏当前状态。
 6. 优先使用对象池、实例化渲染和复用材质，避免游戏循环中产生大量临时对象。
 7. 每个阶段都保持项目可以启动、构建并通过已有测试。
 
-## 推荐目录
+## 实际目录
 
 ```text
-src/app/             React 入口和页面
-src/components/      HUD、菜单和面板
-src/game/data/       塔、敌人、波次和地图配置
-src/game/entities/   游戏实体
-src/game/systems/    战斗、寻路、波次、建造和资源系统
-src/game/world/      Three.js 场景和地图
-src/game/types/      领域类型
-src/state/           Zustand store
-src/rendering/       相机、灯光、材质和性能工具
-src/tests/           单元测试与夹具
-public/models/       GLB 模型
-public/textures/     纹理和环境资源
+src/main.tsx             React 挂载入口
+src/App.tsx              页面壳、HUD、菜单与 3D 容器
+src/gameStore.ts         Zustand 全局状态（战斗循环、建造、抽卡、存档）
+src/game/data.ts         塔/敌人数值、模型文件映射、场地常量
+src/game/rules.ts        纯函数规则（建造校验、波次生成、经济）
+src/game/levels.ts       关卡配置（剧情、波数、资金、难度倍率）
+src/game/cards.ts        命运盲盒（8 张卡、抽卡、修饰符）
+src/game/campusMap.ts    校园路线、路径折线化、路供建造点
+src/game/models.ts       GLB 加载与归一化（高度对齐、贴地、兜底材质）
+src/game/campusModels.ts 校园地标装饰模型
+src/game/campusDecoration.ts 地标摆放
+src/game/music.ts        背景音乐控制器（MP3）
+public/models/           GLB 模型（HyperAI 生成）
+public/audios/           背景音乐 MP3
+scripts/                 规则单测、模型校验、GLB 诊断、Playwright E2E
+docs/                    项目文档
 ```
 
 ## 编码规范
@@ -48,21 +52,21 @@ public/textures/     纹理和环境资源
 - 纯函数优先，副作用集中在系统边界或适配层。
 - 游戏循环中避免每帧 `new`、数组无界增长和重复加载资源。
 - 修改公共接口时同步更新调用方、测试和文档。
-- 注释解释“为什么”，不要复述显而易见的代码。
+- 注释解释"为什么"，不要复述显而易见的代码。
 - 不提交密钥、个人路径、构建产物、临时截图或大型未授权资源。
 
 ## 常用命令
 
-以 `package.json` 中实际脚本为准，通常包括：
+以 `package.json` 中实际脚本为准（包管理器为 pnpm）：
 
 ```bash
-npm install
-npm run dev
-npm run build
-npm run preview
-npm run typecheck
-npm run test
-npm run test:e2e
+pnpm install
+pnpm dev
+pnpm build
+pnpm preview
+pnpm typecheck
+pnpm test
+pnpm test:e2e
 ```
 
 如果某个脚本尚未存在，代理应先补齐脚本或明确说明缺失原因，不要假装命令已执行成功。
@@ -73,19 +77,20 @@ npm run test:e2e
 
 1. 类型检查或等价的静态检查。
 2. 受影响规则的单元测试。
-3. `npm run build` 生产构建。
+3. `pnpm build` 生产构建。
 4. 与功能相关的浏览器手工或 Playwright 验收。
 
 核心验收必须覆盖：
 
 - 地图可见，镜头可旋转、缩放和平移。
 - 塔可以建造、攻击、升级和出售。
-- 敌人沿合法路线移动并能伤害核心。
+- 敌人（虫子、机器人、鲸鱼 Boss）沿路线移动并能伤害核心。
+- 开局命运盲盒流程正确：开盒揭晓、修饰符生效、结果随存档保存。
 - 资源、波次、暂停、加速和结算状态正确。
-- 护城河直线、弯道、桥梁和闸门规则正确。
-- 非法地图改造被拒绝且不会破坏当前状态。
-- 最终波次胜利、核心归零失败、重开流程均可用。
-- GitHub Pages 子路径下模型、纹理和脚本均能加载。
+- 第 6/8 波 Boss 登场，最终波次胜利、核心归零失败、重开流程均可用。
+- 本地存档保存与恢复正确，旧版本存档可迁移。
+- 背景音乐菜单/战斗模式切换正常。
+- GitHub Pages 子路径下模型、音乐和脚本均能加载。
 
 发现失败时，应记录复现步骤、预期结果、实际结果和相关日志；不要只修改测试使其通过。
 
@@ -95,9 +100,9 @@ npm run test:e2e
 
 1. 初始化工程和最小可运行页面。
 2. 完成 3D 地图、灯光和镜头。
-3. 先用一个敌人和一个脉冲炮打通最小战斗闭环。
-4. 扩展到 6 类塔、5 类敌人和完整护城河模块。
-5. 加入波次、Boss、UI、存档和结算。
+3. 先用一种敌人和脉冲炮打通最小战斗闭环。
+4. 扩展到 6 类塔、虫子/机器人常规敌人与鲸鱼 Boss。
+5. 加入波次、盲盒、UI、存档和结算。
 6. 做性能优化、回归测试和 GitHub Pages 部署。
 
 每次改动应尽量小，并说明：改了什么、如何验证、下一步是什么。若当前阶段的验收未通过，不要继续堆叠后续阶段功能。
