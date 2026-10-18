@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>上海科技大学校园建筑编号表 · 塔防游戏 BGM 曲库</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f4f7fa;color:#16283a;
+ font-family:"Noto Sans SC","Microsoft YaHei","PingFang SC",system-ui,sans-serif;line-height:1.6}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:26px;margin:0 0 6px}
+.sub{color:#5b7185;font-size:13px;margin-bottom:22px}
+.sub code{background:#e8eef5;padding:1px 5px;border-radius:4px}
+section{background:#fff;border:1px solid #dde6ef;border-radius:14px;padding:20px 22px;margin-bottom:20px;
+ box-shadow:0 1px 2px rgba(16,42,67,.04)}
+h2{font-size:17px;margin:0 0 14px;padding-left:10px;border-left:4px solid #2f6fb3}
+.note{font-size:13.5px;color:#3c556b}
+.note b{color:#16283a}
+.map{overflow:auto;border:1px solid #dde6ef;border-radius:10px;background:#fff}
+.map svg{display:block;width:100%;height:auto;min-width:760px}
+.zs-grid{display:flex;flex-wrap:wrap;gap:10px}
+.zs{display:flex;align-items:center;gap:8px;border:1px solid #dde6ef;border-left:4px solid var(--c);
+ border-radius:8px;padding:8px 12px;font-size:13.5px;background:#fbfdff}
+.zs-c{font-weight:800;color:var(--c)}
+.zs-v{color:#5b7185}
+.tools{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+input[type=search]{flex:1;min-width:220px;padding:9px 12px;border:1px solid #cfdbe7;border-radius:8px;font-size:14px}
+.tools span{font-size:13px;color:#5b7185;align-self:center}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{padding:8px 10px;border-bottom:1px solid #e8eef5;text-align:left;vertical-align:top}
+th{background:#f0f5fa;position:sticky;top:0;font-size:12.5px;color:#4b6379;z-index:2;white-space:nowrap}
+tbody tr:hover{background:#f7fbff}
+.code{font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sn{color:#8ea3b6;font-variant-numeric:tabular-nums}
+.nm{font-weight:600}
+.tag{display:inline-block;font-size:12px;padding:1px 8px;border-radius:999px;color:var(--c);
+ background:color-mix(in srgb,var(--c) 12%,#fff);border:1px solid color-mix(in srgb,var(--c) 30%,#fff);white-space:nowrap}
+.cat,.geo{color:#5b7185;white-space:nowrap}
+.org{color:#3c556b;font-size:12.5px}
+.tbl-wrap{max-height:620px;overflow:auto;border:1px solid #e8eef5;border-radius:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px}
+.card{border:1px solid #dde6ef;border-radius:12px;padding:14px 16px;background:#fdfeff}
+.card.mash{background:#fffdf5;border-color:#e8d9a8}
+.card-h{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:6px}
+.card-h h3{font-size:14.5px;margin:0;font-weight:600}
+.card-h h3 b{font-weight:800}
+.badge{color:#fff;font-weight:800;font-size:12.5px;padding:2px 9px;border-radius:6px}
+.pill{font-size:11.5px;color:var(--c);border:1px solid color-mix(in srgb,var(--c) 35%,#fff);
+ background:color-mix(in srgb,var(--c) 10%,#fff);padding:1px 8px;border-radius:999px}
+.mood{font-size:12.8px;color:#3c556b;margin:2px 0 6px}
+.meta{font-size:11.5px;color:#8ea3b6;margin:0 0 9px}
+audio{width:100%;height:32px}
+footer{font-size:12.5px;color:#7a90a4;padding:0 4px}
+.hide{display:none!important}
+</style></head><body><div class="wrap">
+
+<h1>上海科技大学 · 校园建筑编号表　与　塔防游戏 BGM 曲库</h1>
+<div class="sub">建筑底图数据：上海科技大学校园地图系统 <code>map.shanghaitech.edu.cn</code>（GIS 服务接口，2025 更新版）　|　
+建筑实体 <b>65</b> 个，分 <b>6</b> 区编号　|　
+配乐 <b>17</b> 首（16 首场景曲 + 1 首建筑串烧），总时长约 <b>75</b> 分钟</div>
+
+<section>
+  <h2>一、建筑编号规则</h2>
+  <p class="note">
+  <b>分区字母 + 两位序号</b>构成唯一编号，例如 <b>A07</b> = 教学研究区第 7 栋。<br>
+  分区字母：<b>A</b> 教学研究区 · <b>B</b> 公共服务区 · <b>C</b> 体育运动区 · <b>D</b> 餐饮服务区 · <b>E</b> 学生生活区 · <b>F</b> 教授公寓区。<br>
+  区内排序规则：<b>自北向南、自西向东</b>，编号相邻的建筑在地图上位置也相邻，便于对照定位。
+  </p>
+</section>
+
+<section>
+  <h2>二、分区统计</h2>
+  <div class="zs-grid"><div class="zs" style="--c:#2f6fb3"><span class="zs-c">A</span><span class="zs-n">教学研究区</span><span class="zs-v">24 栋</span></div><div class="zs" style="--c:#8a5cd6"><span class="zs-c">B</span><span class="zs-n">公共服务区</span><span class="zs-v">15 栋</span></div><div class="zs" style="--c:#d97706"><span class="zs-c">C</span><span class="zs-n">体育运动区</span><span class="zs-v">7 栋</span></div><div class="zs" style="--c:#d94f6b"><span class="zs-c">D</span><span class="zs-n">餐饮服务区</span><span class="zs-v">3 栋</span></div><div class="zs" style="--c:#2f9e6e"><span class="zs-c">E</span><span class="zs-n">学生生活区</span><span class="zs-v">10 栋</span></div><div class="zs" style="--c:#0e8fa7"><span class="zs-c">F</span><span class="zs-n">教授公寓区</span><span class="zs-v">6 栋</span></div></div>
+</section>
+
+<section>
+  <h2>三、校园建筑编号示意图</h2>
+  <div class="map"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 918 732" width="918" height="732" font-family="Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0%" stop-color="#f7fafc"/><stop offset="100%" stop-color="#eef3f8"/>
+</linearGradient>
+<filter id="sh" x="-30%" y="-30%" width="160%" height="160%">
+  <feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="#0b2545" flood-opacity="0.18"/>
+</filter>
+</defs>
+<rect width="918" height="732" fill="url(#bg)"/>
+<polygon points="74.0,351.4 218.1,290.6 359.6,254.4 329.6,105.0 398.4,93.3 693.4,74.0 844.1,457.8 732.4,590.9 311.6,657.8 237.8,616.2 189.2,540.8" fill="#ffffff" fill-opacity="0.85" stroke="#9fb3c8" stroke-width="2.5" stroke-dasharray="9 6"/>
+<polygon points="411.5,125.6 411.7,138.2 413.3,146.0 415.3,156.0 419.3,159.9 458.5,154.4 481.9,172.2 494.2,157.1 495.9,132.1 483.7,121.9 487.0,115.6 487.6,92.4 471.4,82.4 454.9,109.9 447.4,114.4" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="472.6,86.4 452.5,112.3 412.9,125.2 411.5,138.7 416.5,162.8 457.3,157.8 481.9,171.6 493.9,160.2 495.9,136.9 485.8,122.2 486.7,90.8" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="412.9,127.7 452.8,113.8 471.4,83.0 486.1,90.6 487.0,122.2 496.9,132.7 493.9,158.9 483.1,171.6 459.1,155.4 436.6,160.2 417.5,161.7 411.7,136.9" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="380.2,196.2 366.2,129.1 367.7,115.3 388.4,111.4 404.6,188.5 497.1,168.6 501.9,185.4 499.9,199.9 451.6,210.2 427.0,216.1 398.8,222.1 384.8,220.7" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="622.1,242.1 622.7,241.8 623.3,255.0 718.9,259.9 721.4,242.4 714.5,241.8 708.7,243.9 702.1,248.4 663.5,242.6" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="462.7,247.8 467.5,275.6 481.0,277.7 483.7,281.6 532.8,274.6 534.0,271.0 541.8,268.9 540.9,254.4 537.9,237.9" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="397.0,261.0 396.4,279.8 398.0,285.1 419.5,280.3 421.1,287.3 463.0,279.8 462.1,272.8 467.2,271.3 466.0,263.1 463.9,249.3" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="360.0,272.5 342.3,278.6 340.5,273.4 332.4,275.2 333.0,281.6 314.5,287.3 312.1,280.9 301.9,284.0 301.3,301.1 306.1,315.9 335.8,306.6 364.2,300.3 364.2,286.1" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="484.9,283.0 470.8,283.4 471.1,296.3 472.6,304.1 472.9,318.6 481.3,320.4 537.9,323.1 538.2,306.8 539.4,286.9 510.1,284.5 493.9,283.7" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="292.7,284.3 261.0,292.1 231.3,302.3 231.6,312.3 235.2,327.3 238.5,335.5 267.0,327.7 298.1,320.4 298.1,305.0" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="417.7,292.7 421.3,291.8 420.1,281.2 398.6,285.8 398.2,296.9 405.2,320.7 415.9,361.0 463.9,353.2 516.0,358.6 517.8,327.7 483.7,321.3 466.3,323.7 466.6,301.1 442.0,304.7 437.8,299.3 433.0,300.5 430.3,308.9 422.9,309.6" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="179.2,318.9 181.6,334.3 188.2,352.9 226.8,340.6 225.6,336.1 230.7,334.3 231.3,324.9 223.8,302.6" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="344.6,306.8 351.8,339.7 360.5,370.4 378.2,366.8 366.2,300.5" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="307.2,324.9 241.5,342.4 255.6,374.9 299.7,360.7 300.3,352.9 313.8,346.0" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="308.0,327.0 314.4,345.4 306.2,349.0 303.8,356.5 308.0,364.1 302.4,368.0 309.0,378.0 312.8,392.4 337.1,381.9 356.9,375.2 356.3,360.5 353.0,346.9 335.3,351.8 322.7,324.3" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="257.5,362.0 251.5,362.6 251.5,362.6 247.0,348.7 241.3,340.0 230.8,346.0 230.8,359.6 202.7,378.0 202.7,391.2 214.0,410.8 251.2,388.5 259.9,380.4 259.9,368.9" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="248.1,393.3 273.0,376.4 299.9,358.9 304.4,365.9 301.8,367.4 310.2,379.4 311.0,393.6 260.1,426.4 248.1,407.1" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="419.4,360.1 415.8,365.9 415.5,372.5 429.9,421.6 432.9,439.0 440.1,445.4 450.9,435.8 451.2,407.4 447.0,396.0 465.6,386.9 504.5,381.6 506.0,358.0 479.7,355.0 453.9,355.0 431.1,356.2" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="357.5,374.6 358.1,374.0 367.7,430.4 387.5,429.1 381.2,367.7" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="534.3,367.7 553.8,373.4 555.0,386.9 536.4,430.9 519.0,425.5 519.4,414.7" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="308.6,395.7 309.0,411.0 320.0,433.3 320.0,439.1 326.3,452.1 329.9,450.0 330.2,454.2 331.4,456.6 329.0,458.7 344.2,450.1 361.9,440.8 369.3,435.4 368.1,426.6 366.7,414.0 364.3,395.0 361.9,385.4 357.5,373.8 358.1,377.0 343.1,383.3 341.9,380.4 332.9,386.9 330.8,384.0" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="511.3,428.3 500.5,461.7 524.4,469.5 532.5,439.4" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="327.5,459.9 329.6,461.7 328.1,476.4 337.4,488.5 380.0,469.2 390.8,461.7 389.6,442.4 376.4,432.2" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="446.2,462.9 446.2,486.7 448.9,494.5 477.7,494.2 513.6,499.3 518.8,484.9 518.4,468.0 501.9,465.3 485.8,462.3 464.5,461.3" fill="#dce9f7" stroke="#2f6fb3" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="633.3,59.6 632.9,61.7 626.1,77.0 626.1,105.7 665.3,118.9 665.9,102.3 664.7,87.3 667.4,70.7" fill="#eae2fa" stroke="#8a5cd6" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="323.9,96.5 354.5,88.0 362.4,113.3 329.3,119.9" fill="#eae2fa" stroke="#8a5cd6" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="659.9,121.0 661.1,129.8 659.6,133.7 688.1,143.0 688.1,150.5 686.6,156.5 695.6,162.3 695.3,186.6 679.1,185.2 677.9,187.3 687.2,190.6 685.7,200.5 635.3,184.5 635.3,179.1 618.6,174.9 629.7,144.2 631.1,133.0 604.2,123.7 610.8,103.6" fill="#eae2fa" stroke="#8a5cd6" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="723.2,218.5 734.2,236.1 753.4,229.9 745.6,212.8" fill="#eae2fa" stroke="#8a5cd6" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="706.4,243.6 707.3,243.0 706.4,257.1 720.8,260.5 721.1,241.5" fill="#eae2fa" stroke="#8a5cd6" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="632.6,240.8 629.0,254.3 696.8,262.0 704.9,263.9 706.9,243.1 700.4,244.8 651.2,240.9" fill="#eae2fa" stroke="#8a5cd6" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="560.1,243.6 559.8,243.6 562.5,276.4 579.6,275.6 584.1,264.7 588.4,260.6 594.9,237.6" fill="#eae2fa" stroke="#8a5cd6" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="587.7,264.1 584.1,264.1 582.6,264.7 583.2,267.1 581.0,271.0 580.0,274.6 578.1,279.1 572.1,277.3 565.5,282.4 538.0,368.0 556.6,372.5 574.5,323.4 582.6,296.6 586.0,274.2 586.4,273.7 586.7,271.0 588.8,267.1 589.8,264.7 589.2,264.7" fill="#eae2fa" stroke="#8a5cd6" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="600.6,317.1 600.0,318.0 597.0,326.1 605.0,329.4 606.0,320.4" fill="#eae2fa" stroke="#8a5cd6" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="76.5,333.7 52.7,345.8 63.5,359.2 85.5,346.6" fill="#eae2fa" stroke="#8a5cd6" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="575.4,394.2 575.1,395.1 573.0,401.8 579.3,404.0 579.9,396.9" fill="#eae2fa" stroke="#8a5cd6" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="326.0,504.5 334.7,500.5 336.8,502.4 356.3,489.3 381.5,477.0 384.2,479.8 392.2,477.0 398.6,492.4 398.8,502.9 368.9,517.1 341.9,536.4 329.6,521.6 329.9,515.0" fill="#eae2fa" stroke="#8a5cd6" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="555.6,452.3 548.7,467.4 546.1,469.5 545.5,504.5 547.5,505.7 548.1,515.0 566.7,540.0 566.7,545.1 585.9,554.5 593.1,537.6 597.6,538.8 610.4,511.7 609.6,493.9 607.2,491.8 612.8,480.1 612.0,468.6 604.4,469.2" fill="#eae2fa" stroke="#8a5cd6" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="798.4,496.1 812.3,507.1 797.0,524.5 782.9,513.7" fill="#eae2fa" stroke="#8a5cd6" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="424.8,608.5 430.5,634.7 453.6,632.3 452.5,618.3 446.1,603.5" fill="#eae2fa" stroke="#8a5cd6" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="603.8,123.4 631.5,132.4 630.9,143.0 616.8,187.3 587.7,180.0 588.6,168.6" fill="#fbeedd" stroke="#d97706" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="517.0,170.6 519.7,193.8 564.3,194.1 564.0,169.7" fill="#fbeedd" stroke="#d97706" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="736.0,274.9 736.0,291.5 754.3,290.9 753.1,275.6" fill="#fbeedd" stroke="#d97706" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="735.9,295.6 736.4,356.5 770.5,358.1 770.7,349.7 770.7,335.5 771.4,316.8 760.3,314.7 758.4,295.4" fill="#fbeedd" stroke="#d97706" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="772.3,337.9 772.9,355.7 783.4,355.7 784.0,336.9" fill="#fbeedd" stroke="#d97706" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="647.0,387.9 657.2,382.7 683.3,389.0 704.9,401.8 715.9,402.1 708.7,424.0 708.7,441.5 694.4,439.7 682.1,432.7 648.8,415.0 643.7,408.7 641.6,398.1" fill="#fbeedd" stroke="#d97706" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="729.4,367.7 729.4,482.2 767.8,488.8 800.8,478.5 802.0,423.8 797.8,372.5 764.8,361.7" fill="#fbeedd" stroke="#d97706" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="621.5,256.5 625.5,258.4 628.1,256.2 628.5,261.7 642.5,268.6 640.4,274.3 638.6,281.2 621.3,275.2 617.7,284.5 617.7,296.6 631.7,302.0 630.5,308.6 620.3,306.5 619.5,311.4 606.8,308.6 607.8,303.6 612.6,286.9 614.0,280.6 617.7,266.2" fill="#fbe2e7" stroke="#d94f6b" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="596.4,378.8 584.1,377.3 583.8,369.5 597.0,326.9 601.8,329.0 606.0,332.7 620.9,337.2 615.3,348.4 598.2,343.3 594.0,353.2 595.2,364.7 609.8,369.2 609.0,371.0 609.2,376.7 598.5,372.5" fill="#fbe2e7" stroke="#d94f6b" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="571.5,455.7 556.5,451.4 557.1,445.1 566.1,420.7 572.8,402.0 580.6,403.9 579.9,408.1 594.0,414.1 590.1,426.1 573.3,421.3 569.4,429.8 569.1,442.7 584.1,447.2 586.5,450.0 585.3,454.7 572.4,449.6" fill="#fbe2e7" stroke="#d94f6b" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="632.7,240.0 627.3,250.8 628.1,263.5 649.8,270.1 650.0,273.7 672.2,276.7 672.2,281.6 682.1,282.4 682.7,261.0 683.6,244.8 651.6,240.3 650.6,248.1" fill="#ddf2e8" stroke="#2f9e6e" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="686.9,264.7 685.1,275.8 684.5,286.1 684.5,298.1 694.7,300.5 711.1,301.4 710.9,307.8 718.7,308.4 722.3,308.6 723.8,308.9 724.1,294.8 724.1,273.4 714.5,274.0 713.9,267.1" fill="#ddf2e8" stroke="#2f9e6e" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="638.0,281.9 639.8,273.7 671.3,277.0 672.8,298.1 670.7,315.3 638.9,310.2 638.9,303.6 617.4,297.2 618.6,284.5 620.7,275.8" fill="#ddf2e8" stroke="#2f9e6e" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="676.4,298.1 676.7,298.7 674.0,309.9 674.3,310.5 674.0,330.1 699.8,335.1 700.7,340.9 720.2,342.1 720.2,318.9 719.6,307.8 710.5,308.4 710.3,301.4" fill="#ddf2e8" stroke="#2f9e6e" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="605.6,331.0 605.6,320.5 608.8,309.9 628.6,316.0 629.8,308.4 661.3,313.2 661.6,335.5 659.5,349.7 650.5,349.3 649.9,346.1 627.1,343.0 628.3,338.2" fill="#ddf2e8" stroke="#2f9e6e" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="665.4,331.1 699.9,334.7 700.5,341.3 710.1,340.4 709.5,379.9 690.1,380.2 663.4,375.7 663.6,341.6" fill="#ddf2e8" stroke="#2f9e6e" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="595.6,363.8 595.6,353.6 598.6,343.3 616.7,350.0 618.7,341.9 650.2,346.1 650.2,370.7 647.5,384.0 616.9,380.1 616.7,370.7" fill="#ddf2e8" stroke="#2f9e6e" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="579.9,409.2 580.2,397.8 582.6,387.9 601.2,394.2 604.4,385.1 633.5,402.1 634.1,422.5 627.3,437.6 600.0,421.3 599.1,415.2" fill="#ddf2e8" stroke="#2f9e6e" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="570.8,441.8 569.0,430.1 572.6,421.1 589.4,426.5 593.9,419.2 622.7,434.9 622.9,461.1 616.9,471.6 588.8,456.6 587.9,447.3" fill="#ddf2e8" stroke="#2f9e6e" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="640.7,410.2 675.8,429.8 676.4,434.0 687.2,442.4 689.0,469.8 680.9,478.5 635.7,452.9 635.3,420.4" fill="#ddf2e8" stroke="#2f9e6e" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="630.5,476.2 627.3,486.1 628.7,502.4 653.4,512.3 683.6,513.2 683.3,491.2 682.7,483.7 668.3,482.2 656.3,482.5 642.5,477.3 641.0,480.1" fill="#ddf1f5" stroke="#0e8fa7" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="694.3,481.2 693.9,512.0 719.4,513.5 734.4,518.3 737.1,492.7 730.0,489.3 723.0,487.8 721.5,483.1" fill="#ddf1f5" stroke="#0e8fa7" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="746.2,505.0 746.2,505.7 746.5,513.8 774.1,515.0 789.7,509.6 789.7,491.5 786.4,484.0 773.5,490.0 760.3,489.1 753.7,485.8 746.5,488.8" fill="#ddf1f5" stroke="#0e8fa7" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="729.8,518.9 729.8,550.3 757.9,550.8 773.2,542.7 772.0,526.4 769.5,518.4 764.7,519.1 758.1,523.3 757.5,519.1" fill="#ddf1f5" stroke="#0e8fa7" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="614.7,528.6 614.0,546.3 618.3,553.9 642.5,544.8 656.6,543.0 656.3,526.4 655.1,518.0 639.8,519.8 620.3,524.9 614.7,528.8 614.7,529.1" fill="#ddf1f5" stroke="#0e8fa7" stroke-width="1.6" filter="url(#sh)"/>
+<polygon points="668.2,521.5 665.2,531.5 665.2,547.4 692.2,556.4 706.3,559.2 721.8,559.2 721.6,528.7 707.7,528.7 694.0,523.9 681.6,520.9 679.0,526.0" fill="#ddf1f5" stroke="#0e8fa7" stroke-width="1.6" filter="url(#sh)"/>
+<text x="455.6" y="136.1" font-size="12" font-weight="700" text-anchor="middle" fill="#2f6fb3" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">A01</text>
+<line x1="460.7" y1="133.2" x2="479.1" y2="151.6" stroke="#2f6fb3" stroke-width="1.1" opacity="0.75"/>
+<rect x="462.1" y="143.6" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#2f6fb3" stroke-width="1.2"/>
+<text x="479.1" y="155.8" font-size="11.5" font-weight="700" text-anchor="middle" fill="#2f6fb3">A02</text>
+<line x1="459.1" y1="134.5" x2="459.1" y2="108.5" stroke="#2f6fb3" stroke-width="1.1" opacity="0.75"/>
+<rect x="442.1" y="100.5" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#2f6fb3" stroke-width="1.2"/>
+<text x="459.1" y="112.7" font-size="11.5" font-weight="700" text-anchor="middle" fill="#2f6fb3">A03</text>
+<text x="422.3" y="184.5" font-size="12" font-weight="700" text-anchor="middle" fill="#2f6fb3" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">A04</text>
+<line x1="677.5" y1="246.5" x2="703.5" y2="246.5" stroke="#2f6fb3" stroke-width="1.1" opacity="0.75"/>
+<rect x="686.5" y="238.5" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#2f6fb3" stroke-width="1.2"/>
+<text x="703.5" y="250.7" font-size="11.5" font-weight="700" text-anchor="middle" fill="#2f6fb3">A05</text>
+<text x="509.1" y="269.7" font-size="12" font-weight="700" text-anchor="middle" fill="#2f6fb3" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">A06</text>
+<text x="435.4" y="277.2" font-size="12" font-weight="700" text-anchor="middle" fill="#2f6fb3" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">A07</text>
+<text x="331.4" y="292.2" font-size="12" font-weight="700" text-anchor="middle" fill="#2f6fb3" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">A08</text>
+<text x="497.5" y="303.4" font-size="12" font-weight="700" text-anchor="middle" fill="#2f6fb3" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">A09</text>
+<text x="261.5" y="316.1" font-size="12" font-weight="700" text-anchor="middle" fill="#2f6fb3" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">A10</text>
+<text x="442.1" y="317.5" font-size="12" font-weight="700" text-anchor="middle" fill="#2f6fb3" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">A11</text>
+<text x="210.9" y="334.7" font-size="12" font-weight="700" text-anchor="middle" fill="#2f6fb3" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">A12</text>
+<line x1="360.3" y1="336.9" x2="360.3" y2="310.9" stroke="#2f6fb3" stroke-width="1.1" opacity="0.75"/>
+<rect x="343.3" y="302.9" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#2f6fb3" stroke-width="1.2"/>
+<text x="360.3" y="315.1" font-size="11.5" font-weight="700" text-anchor="middle" fill="#2f6fb3">A13</text>
+<text x="286.3" y="354.6" font-size="12" font-weight="700" text-anchor="middle" fill="#2f6fb3" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">A14</text>
+<text x="323.3" y="362.8" font-size="12" font-weight="700" text-anchor="middle" fill="#2f6fb3" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">A15</text>
+<text x="238.5" y="373.4" font-size="12" font-weight="700" text-anchor="middle" fill="#2f6fb3" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">A16</text>
+<text x="284.1" y="389.6" font-size="12" font-weight="700" text-anchor="middle" fill="#2f6fb3" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">A17</text>
+<text x="449.6" y="393.3" font-size="12" font-weight="700" text-anchor="middle" fill="#2f6fb3" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">A18</text>
+<line x1="370.3" y1="395.1" x2="370.3" y2="369.1" stroke="#2f6fb3" stroke-width="1.1" opacity="0.75"/>
+<rect x="353.3" y="361.1" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#2f6fb3" stroke-width="1.2"/>
+<text x="370.3" y="373.3" font-size="11.5" font-weight="700" text-anchor="middle" fill="#2f6fb3">A19</text>
+<line x1="536.3" y1="399.9" x2="536.3" y2="373.9" stroke="#2f6fb3" stroke-width="1.1" opacity="0.75"/>
+<rect x="519.3" y="365.9" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#2f6fb3" stroke-width="1.2"/>
+<text x="536.3" y="378.1" font-size="11.5" font-weight="700" text-anchor="middle" fill="#2f6fb3">A20</text>
+<text x="341.1" y="421.6" font-size="12" font-weight="700" text-anchor="middle" fill="#2f6fb3" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">A21</text>
+<line x1="517.2" y1="449.7" x2="517.2" y2="423.7" stroke="#2f6fb3" stroke-width="1.1" opacity="0.75"/>
+<rect x="500.2" y="415.7" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#2f6fb3" stroke-width="1.2"/>
+<text x="517.2" y="427.9" font-size="11.5" font-weight="700" text-anchor="middle" fill="#2f6fb3">A22</text>
+<text x="357.4" y="465.7" font-size="12" font-weight="700" text-anchor="middle" fill="#2f6fb3" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">A23</text>
+<text x="482.2" y="482.2" font-size="12" font-weight="700" text-anchor="middle" fill="#2f6fb3" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">A24</text>
+<text x="647.7" y="89.6" font-size="12" font-weight="700" text-anchor="middle" fill="#8a5cd6" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">B01</text>
+<line x1="342.5" y1="104.4" x2="342.5" y2="78.4" stroke="#8a5cd6" stroke-width="1.1" opacity="0.75"/>
+<rect x="325.5" y="70.4" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#8a5cd6" stroke-width="1.2"/>
+<text x="342.5" y="82.6" font-size="11.5" font-weight="700" text-anchor="middle" fill="#8a5cd6">B02</text>
+<text x="659.4" y="161.6" font-size="12" font-weight="700" text-anchor="middle" fill="#8a5cd6" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">B03</text>
+<line x1="739.1" y1="224.3" x2="739.1" y2="198.3" stroke="#8a5cd6" stroke-width="1.1" opacity="0.75"/>
+<rect x="722.1" y="190.3" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#8a5cd6" stroke-width="1.2"/>
+<text x="739.1" y="202.5" font-size="11.5" font-weight="700" text-anchor="middle" fill="#8a5cd6">B04</text>
+<line x1="712.4" y1="249.1" x2="712.4" y2="223.1" stroke="#8a5cd6" stroke-width="1.1" opacity="0.75"/>
+<rect x="695.4" y="215.1" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#8a5cd6" stroke-width="1.2"/>
+<text x="712.4" y="227.3" font-size="11.5" font-weight="700" text-anchor="middle" fill="#8a5cd6">B05</text>
+<line x1="674.6" y1="250.0" x2="674.6" y2="224.0" stroke="#8a5cd6" stroke-width="1.1" opacity="0.75"/>
+<rect x="657.6" y="216.0" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#8a5cd6" stroke-width="1.2"/>
+<text x="674.6" y="228.2" font-size="11.5" font-weight="700" text-anchor="middle" fill="#8a5cd6">B06</text>
+<line x1="575.6" y1="257.5" x2="575.6" y2="231.5" stroke="#8a5cd6" stroke-width="1.1" opacity="0.75"/>
+<rect x="558.6" y="223.5" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#8a5cd6" stroke-width="1.2"/>
+<text x="575.6" y="235.7" font-size="11.5" font-weight="700" text-anchor="middle" fill="#8a5cd6">B07</text>
+<text x="578.5" y="289.5" font-size="12" font-weight="700" text-anchor="middle" fill="#8a5cd6" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">B08</text>
+<line x1="601.7" y1="322.2" x2="575.7" y2="322.2" stroke="#8a5cd6" stroke-width="1.1" opacity="0.75"/>
+<rect x="558.7" y="314.2" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#8a5cd6" stroke-width="1.2"/>
+<text x="575.7" y="326.4" font-size="11.5" font-weight="700" text-anchor="middle" fill="#8a5cd6">B09</text>
+<line x1="69.6" y1="346.3" x2="69.6" y2="320.3" stroke="#8a5cd6" stroke-width="1.1" opacity="0.75"/>
+<rect x="52.6" y="312.3" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#8a5cd6" stroke-width="1.2"/>
+<text x="69.6" y="324.5" font-size="11.5" font-weight="700" text-anchor="middle" fill="#8a5cd6">B10</text>
+<line x1="576.5" y1="398.4" x2="576.5" y2="372.4" stroke="#8a5cd6" stroke-width="1.1" opacity="0.75"/>
+<rect x="559.5" y="364.4" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#8a5cd6" stroke-width="1.2"/>
+<text x="576.5" y="376.6" font-size="11.5" font-weight="700" text-anchor="middle" fill="#8a5cd6">B11</text>
+<text x="359.9" y="505.4" font-size="12" font-weight="700" text-anchor="middle" fill="#8a5cd6" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">B12</text>
+<text x="579.9" y="506.9" font-size="12" font-weight="700" text-anchor="middle" fill="#8a5cd6" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">B13</text>
+<line x1="797.7" y1="510.3" x2="823.7" y2="510.3" stroke="#8a5cd6" stroke-width="1.1" opacity="0.75"/>
+<rect x="806.7" y="502.3" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#8a5cd6" stroke-width="1.2"/>
+<text x="823.7" y="514.5" font-size="11.5" font-weight="700" text-anchor="middle" fill="#8a5cd6">B14</text>
+<line x1="441.5" y1="619.5" x2="441.5" y2="593.5" stroke="#8a5cd6" stroke-width="1.1" opacity="0.75"/>
+<rect x="424.5" y="585.5" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#8a5cd6" stroke-width="1.2"/>
+<text x="441.5" y="597.7" font-size="11.5" font-weight="700" text-anchor="middle" fill="#8a5cd6">B15</text>
+<text x="609.8" y="159.9" font-size="12" font-weight="700" text-anchor="middle" fill="#d97706" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">C01</text>
+<text x="541.2" y="186.2" font-size="12" font-weight="700" text-anchor="middle" fill="#d97706" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">C02</text>
+<line x1="744.9" y1="283.2" x2="744.9" y2="257.2" stroke="#d97706" stroke-width="1.1" opacity="0.75"/>
+<rect x="727.9" y="249.2" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#d97706" stroke-width="1.2"/>
+<text x="744.9" y="261.4" font-size="11.5" font-weight="700" text-anchor="middle" fill="#d97706">C03</text>
+<line x1="759.3" y1="327.8" x2="759.3" y2="301.8" stroke="#d97706" stroke-width="1.1" opacity="0.75"/>
+<rect x="742.3" y="293.8" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#d97706" stroke-width="1.2"/>
+<text x="759.3" y="306.0" font-size="11.5" font-weight="700" text-anchor="middle" fill="#d97706">C04</text>
+<line x1="778.1" y1="346.5" x2="778.1" y2="320.5" stroke="#d97706" stroke-width="1.1" opacity="0.75"/>
+<rect x="761.1" y="312.5" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#d97706" stroke-width="1.2"/>
+<text x="778.1" y="324.7" font-size="11.5" font-weight="700" text-anchor="middle" fill="#d97706">C05</text>
+<text x="678.0" y="414.5" font-size="12" font-weight="700" text-anchor="middle" fill="#d97706" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">C06</text>
+<text x="770.3" y="429.2" font-size="12" font-weight="700" text-anchor="middle" fill="#d97706" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">C07</text>
+<line x1="623.3" y1="283.6" x2="623.3" y2="309.6" stroke="#d94f6b" stroke-width="1.1" opacity="0.75"/>
+<rect x="606.3" y="301.6" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#d94f6b" stroke-width="1.2"/>
+<text x="623.3" y="313.8" font-size="11.5" font-weight="700" text-anchor="middle" fill="#d94f6b">D01</text>
+<line x1="601.2" y1="356.7" x2="582.9" y2="338.3" stroke="#d94f6b" stroke-width="1.1" opacity="0.75"/>
+<rect x="565.9" y="330.3" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#d94f6b" stroke-width="1.2"/>
+<text x="582.9" y="342.5" font-size="11.5" font-weight="700" text-anchor="middle" fill="#d94f6b">D02</text>
+<line x1="575.5" y1="432.6" x2="575.5" y2="458.6" stroke="#d94f6b" stroke-width="1.1" opacity="0.75"/>
+<rect x="558.5" y="450.6" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#d94f6b" stroke-width="1.2"/>
+<text x="575.5" y="462.8" font-size="11.5" font-weight="700" text-anchor="middle" fill="#d94f6b">D03</text>
+<text x="656.9" y="265.2" font-size="12" font-weight="700" text-anchor="middle" fill="#2f9e6e" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">E01</text>
+<line x1="707.1" y1="290.7" x2="707.1" y2="264.7" stroke="#2f9e6e" stroke-width="1.1" opacity="0.75"/>
+<rect x="690.1" y="256.7" width="34.0" height="16.0" rx="4.5" fill="#ffffff" stroke="#2f9e6e" stroke-width="1.2"/>
+<text x="707.1" y="268.9" font-size="11.5" font-weight="700" text-anchor="middle" fill="#2f9e6e">E02</text>
+<text x="642.7" y="295.9" font-size="12" font-weight="700" text-anchor="middle" fill="#2f9e6e" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">E03</text>
+<text x="696.4" y="321.0" font-size="12" font-weight="700" text-anchor="middle" fill="#2f9e6e" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">E04</text>
+<text x="634.7" y="334.3" font-size="12" font-weight="700" text-anchor="middle" fill="#2f9e6e" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">E05</text>
+<text x="687.9" y="357.4" font-size="12" font-weight="700" text-anchor="middle" fill="#2f9e6e" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">E06</text>
+<text x="620.7" y="364.6" font-size="12" font-weight="700" text-anchor="middle" fill="#2f9e6e" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">E07</text>
+<text x="604.2" y="411.5" font-size="12" font-weight="700" text-anchor="middle" fill="#2f9e6e" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">E08</text>
+<text x="593.5" y="445.3" font-size="12" font-weight="700" text-anchor="middle" fill="#2f9e6e" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">E09</text>
+<text x="665.1" y="446.4" font-size="12" font-weight="700" text-anchor="middle" fill="#2f9e6e" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">E10</text>
+<text x="654.4" y="493.9" font-size="12" font-weight="700" text-anchor="middle" fill="#0e8fa7" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">F01</text>
+<text x="719.2" y="501.4" font-size="12" font-weight="700" text-anchor="middle" fill="#0e8fa7" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">F02</text>
+<text x="764.8" y="502.2" font-size="12" font-weight="700" text-anchor="middle" fill="#0e8fa7" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">F03</text>
+<text x="756.9" y="534.1" font-size="12" font-weight="700" text-anchor="middle" fill="#0e8fa7" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">F04</text>
+<text x="631.5" y="537.2" font-size="12" font-weight="700" text-anchor="middle" fill="#0e8fa7" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">F05</text>
+<text x="691.1" y="540.9" font-size="12" font-weight="700" text-anchor="middle" fill="#0e8fa7" stroke="#fff" stroke-width="2.6" paint-order="stroke" stroke-linejoin="round">F06</text>
+<rect x="22" y="600" width="266" height="118" rx="10" fill="#ffffff" fill-opacity="0.94" stroke="#c7d5e3"/>
+<text x="36" y="624" font-size="13.5" font-weight="700" fill="#12324f">功能分区图例</text>
+<rect x="36" y="635.0" width="15" height="10" rx="2" fill="#dce9f7" stroke="#2f6fb3"/>
+<text x="58" y="644.0" font-size="11.5" fill="#2b4257">A　教学研究区</text>
+<rect x="36" y="647.6" width="15" height="10" rx="2" fill="#eae2fa" stroke="#8a5cd6"/>
+<text x="58" y="656.6" font-size="11.5" fill="#2b4257">B　公共服务区</text>
+<rect x="36" y="660.2" width="15" height="10" rx="2" fill="#fbeedd" stroke="#d97706"/>
+<text x="58" y="669.2" font-size="11.5" fill="#2b4257">C　体育运动区</text>
+<rect x="36" y="672.8" width="15" height="10" rx="2" fill="#fbe2e7" stroke="#d94f6b"/>
+<text x="58" y="681.8" font-size="11.5" fill="#2b4257">D　餐饮服务区</text>
+<rect x="36" y="685.4" width="15" height="10" rx="2" fill="#ddf2e8" stroke="#2f9e6e"/>
+<text x="58" y="694.4" font-size="11.5" fill="#2b4257">E　学生生活区</text>
+<rect x="36" y="698.0" width="15" height="10" rx="2" fill="#ddf1f5" stroke="#0e8fa7"/>
+<text x="58" y="707.0" font-size="11.5" fill="#2b4257">F　教授公寓区</text>
+<polygon points="856,32 845,66 856,59 867,66" fill="#12324f"/>
+<text x="856" y="84" font-size="12" font-weight="700" text-anchor="middle" fill="#12324f">N</text>
+<line x1="747.8634567014013" y1="706" x2="888.0" y2="706" stroke="#12324f" stroke-width="3"/>
+<text x="817.9317283507006" y="698" font-size="11.5" text-anchor="middle" fill="#12324f">约 200 m</text>
+<text x="74" y="34" font-size="19" font-weight="800" fill="#12324f">上海科技大学（浦东·张江校区）校园建筑编号示意图</text>
+<text x="74" y="54" font-size="11.5" fill="#5b7185">底图几何数据来源：上海科技大学校园地图系统 map.shanghaitech.edu.cn（GIS 服务接口，2025 年更新版）</text>
+</svg></div>
+  <p class="note" style="margin-top:10px">图上编号与下表完全一一对应。原图由官方 GIS 建筑多边形数据按等距圆柱投影重绘。</p>
+</section>
+
+<section>
+  <h2>四、建筑编号总表</h2>
+  <div class="tools">
+    <input type="search" id="q" placeholder="输入编号 / 建筑名 / 分区 / 类别 / 机构名 过滤，例如：A07、图书馆、信息学院">
+    <span id="cnt"></span>
+  </div>
+  <div class="tbl-wrap">
+    <table id="tbl">
+      <thead><tr><th>编号</th><th>序号</th><th>建筑名称</th><th>分区</th><th>功能类别</th>
+      <th>坐标（纬度, 经度）</th><th>楼内机构 / 部门</th></tr></thead>
+      <tbody><tr data-k="A01 人字楼 教学研究区 教学研究 iHuman研究所"><td class="code" style="color:#2f6fb3">A01</td><td class="sn">1</td><td class="nm">人字楼</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18594, 121.60137</td><td class="org">iHuman研究所</td></tr><tr data-k="A02 免疫化学研究所 教学研究区 教学研究 —"><td class="code" style="color:#2f6fb3">A02</td><td class="sn">2</td><td class="nm">免疫化学研究所</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18592, 121.60145</td><td class="org">—</td></tr><tr data-k="A03 iHuman研究所 教学研究区 教学研究 —"><td class="code" style="color:#2f6fb3">A03</td><td class="sn">3</td><td class="nm">iHuman研究所</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18590, 121.60142</td><td class="org">—</td></tr><tr data-k="A04 生命学院 教学研究区 教学研究 生命科学与技术学院、免疫化学研究所"><td class="code" style="color:#2f6fb3">A04</td><td class="sn">4</td><td class="nm">生命学院</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18531, 121.60087</td><td class="org">生命科学与技术学院、免疫化学研究所</td></tr><tr data-k="A05 学生处 教学研究区 教学研究 —"><td class="code" style="color:#2f6fb3">A05</td><td class="sn">5</td><td class="nm">学生处</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18447, 121.60470</td><td class="org">—</td></tr><tr data-k="A06 信息学院3号楼 教学研究区 教学研究 信息科学与技术学院"><td class="code" style="color:#2f6fb3">A06</td><td class="sn">6</td><td class="nm">信息学院3号楼</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18422, 121.60217</td><td class="org">信息科学与技术学院</td></tr><tr data-k="A07 信息学院2号楼 教学研究区 教学研究 信息科学与技术学院"><td class="code" style="color:#2f6fb3">A07</td><td class="sn">7</td><td class="nm">信息学院2号楼</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18413, 121.60107</td><td class="org">信息科学与技术学院</td></tr><tr data-k="A08 物质学院1号楼 教学研究区 教学研究 物质科学与技术学院"><td class="code" style="color:#2f6fb3">A08</td><td class="sn">8</td><td class="nm">物质学院1号楼</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18393, 121.59951</td><td class="org">物质科学与技术学院</td></tr><tr data-k="A09 生医工学院 教学研究区 教学研究 信息科学与技术学院"><td class="code" style="color:#2f6fb3">A09</td><td class="sn">9</td><td class="nm">生医工学院</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18379, 121.60200</td><td class="org">信息科学与技术学院</td></tr><tr data-k="A10 物质学院2号楼 教学研究区 教学研究 物质科学与技术学院"><td class="code" style="color:#2f6fb3">A10</td><td class="sn">10</td><td class="nm">物质学院2号楼</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18363, 121.59846</td><td class="org">物质科学与技术学院</td></tr><tr data-k="A11 信息学院1号楼 教学研究区 教学研究 信息科学与技术学院"><td class="code" style="color:#2f6fb3">A11</td><td class="sn">11</td><td class="nm">信息学院1号楼</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18361, 121.60117</td><td class="org">信息科学与技术学院</td></tr><tr data-k="A12 物质学院3号楼 教学研究区 教学研究 物质科学与技术学院"><td class="code" style="color:#2f6fb3">A12</td><td class="sn">12</td><td class="nm">物质学院3号楼</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18339, 121.59770</td><td class="org">物质科学与技术学院</td></tr><tr data-k="A13 物质学院4号楼 教学研究区 教学研究 物质科学与技术学院"><td class="code" style="color:#2f6fb3">A13</td><td class="sn">13</td><td class="nm">物质学院4号楼</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18331, 121.59994</td><td class="org">物质科学与技术学院</td></tr><tr data-k="A14 物质学院6号楼 教学研究区 教学研究 物质科学与技术学院"><td class="code" style="color:#2f6fb3">A14</td><td class="sn">14</td><td class="nm">物质学院6号楼</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18313, 121.59883</td><td class="org">物质科学与技术学院</td></tr><tr data-k="A15 物质学院5号楼 教学研究区 教学研究 物质科学与技术学院"><td class="code" style="color:#2f6fb3">A15</td><td class="sn">15</td><td class="nm">物质学院5号楼</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18303, 121.59939</td><td class="org">物质科学与技术学院</td></tr><tr data-k="A16 物质学院7号楼 教学研究区 教学研究 物质科学与技术学院"><td class="code" style="color:#2f6fb3">A16</td><td class="sn">16</td><td class="nm">物质学院7号楼</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18289, 121.59812</td><td class="org">物质科学与技术学院</td></tr><tr data-k="A17 物质学院8号楼 教学研究区 教学研究 物质科学与技术学院"><td class="code" style="color:#2f6fb3">A17</td><td class="sn">17</td><td class="nm">物质学院8号楼</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18268, 121.59880</td><td class="org">物质科学与技术学院</td></tr><tr data-k="A18 创业与管理学院 教学研究区 教学研究 创业与管理学院"><td class="code" style="color:#2f6fb3">A18</td><td class="sn">18</td><td class="nm">创业与管理学院</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18264, 121.60128</td><td class="org">创业与管理学院</td></tr><tr data-k="A19 人文科学研究院 教学研究区 教学研究 人文科学研究院"><td class="code" style="color:#2f6fb3">A19</td><td class="sn">19</td><td class="nm">人文科学研究院</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18256, 121.60009</td><td class="org">人文科学研究院</td></tr><tr data-k="A20 H2楼,学生科创中心 教学研究区 教学研究 通识教育中心、学生事务处"><td class="code" style="color:#2f6fb3">A20</td><td class="sn">20</td><td class="nm">H2楼,学生科创中心</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18250, 121.60258</td><td class="org">通识教育中心、学生事务处</td></tr><tr data-k="A21 创意与艺术学院 教学研究区 教学研究 创意与艺术学院"><td class="code" style="color:#2f6fb3">A21</td><td class="sn">21</td><td class="nm">创意与艺术学院</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18227, 121.59965</td><td class="org">创意与艺术学院</td></tr><tr data-k="A22 报告厅 教学研究区 教学研究 —"><td class="code" style="color:#2f6fb3">A22</td><td class="sn">22</td><td class="nm">报告厅</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18186, 121.60229</td><td class="org">—</td></tr><tr data-k="A23 数学科学研究所 教学研究区 教学研究 数学科学研究所"><td class="code" style="color:#2f6fb3">A23</td><td class="sn">23</td><td class="nm">数学科学研究所</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18171, 121.59990</td><td class="org">数学科学研究所</td></tr><tr data-k="A24 教学中心 教学研究区 教学研究 教学事务处"><td class="code" style="color:#2f6fb3">A24</td><td class="sn">24</td><td class="nm">教学中心</td><td><span class="tag" style="--c:#2f6fb3">教学研究区</span></td><td class="cat">教学研究</td><td class="geo">31.18150, 121.60177</td><td class="org">教学事务处</td></tr><tr data-k="B01 上海张江海科雅乐轩酒店 公共服务区 公共服务 —"><td class="code" style="color:#8a5cd6">B01</td><td class="sn">25</td><td class="nm">上海张江海科雅乐轩酒店</td><td><span class="tag" style="--c:#8a5cd6">公共服务区</span></td><td class="cat">公共服务</td><td class="geo">31.18653, 121.60425</td><td class="org">—</td></tr><tr data-k="B02 上海科技大学北门(海科路230号) 公共服务区 公共服务 —"><td class="code" style="color:#8a5cd6">B02</td><td class="sn">26</td><td class="nm">上海科技大学北门(海科路230号)</td><td><span class="tag" style="--c:#8a5cd6">公共服务区</span></td><td class="cat">公共服务</td><td class="geo">31.18629, 121.59968</td><td class="org">—</td></tr><tr data-k="B03 会议中心 公共服务区 公共服务 —"><td class="code" style="color:#8a5cd6">B03</td><td class="sn">27</td><td class="nm">会议中心</td><td><span class="tag" style="--c:#8a5cd6">公共服务区</span></td><td class="cat">公共服务</td><td class="geo">31.18561, 121.60442</td><td class="org">—</td></tr><tr data-k="B04 上海科技大学东门(中科路1号) 公共服务区 公共服务 —"><td class="code" style="color:#8a5cd6">B04</td><td class="sn">28</td><td class="nm">上海科技大学东门(中科路1号)</td><td><span class="tag" style="--c:#8a5cd6">公共服务区</span></td><td class="cat">公共服务</td><td class="geo">31.18475, 121.60562</td><td class="org">—</td></tr><tr data-k="B05 上海银行 公共服务区 公共服务 —"><td class="code" style="color:#8a5cd6">B05</td><td class="sn">29</td><td class="nm">上海银行</td><td><span class="tag" style="--c:#8a5cd6">公共服务区</span></td><td class="cat">公共服务</td><td class="geo">31.18443, 121.60522</td><td class="org">—</td></tr><tr data-k="B06 学生活动中心 公共服务区 公共服务 —"><td class="code" style="color:#8a5cd6">B06</td><td class="sn">30</td><td class="nm">学生活动中心</td><td><span class="tag" style="--c:#8a5cd6">公共服务区</span></td><td class="cat">公共服务</td><td class="geo">31.18442, 121.60465</td><td class="org">—</td></tr><tr data-k="B07 卫生所 公共服务区 公共服务 —"><td class="code" style="color:#8a5cd6">B07</td><td class="sn">31</td><td class="nm">卫生所</td><td><span class="tag" style="--c:#8a5cd6">公共服务区</span></td><td class="cat">公共服务</td><td class="geo">31.18433, 121.60317</td><td class="org">—</td></tr><tr data-k="B08 H1,校园服务中心,309室 IT服务中心 公共服务区 公共服务 —"><td class="code" style="color:#8a5cd6">B08</td><td class="sn">32</td><td class="nm">H1,校园服务中心,309室 IT服务中心</td><td><span class="tag" style="--c:#8a5cd6">公共服务区</span></td><td class="cat">公共服务</td><td class="geo">31.18397, 121.60321</td><td class="org">—</td></tr><tr data-k="B09 KFC 公共服务区 公共服务 —"><td class="code" style="color:#8a5cd6">B09</td><td class="sn">33</td><td class="nm">KFC</td><td><span class="tag" style="--c:#8a5cd6">公共服务区</span></td><td class="cat">公共服务</td><td class="geo">31.18350, 121.60356</td><td class="org">—</td></tr><tr data-k="B10 上海科技大学西门(集慧路249号) 公共服务区 公共服务 —"><td class="code" style="color:#8a5cd6">B10</td><td class="sn">34</td><td class="nm">上海科技大学西门(集慧路249号)</td><td><span class="tag" style="--c:#8a5cd6">公共服务区</span></td><td class="cat">公共服务</td><td class="geo">31.18319, 121.59558</td><td class="org">—</td></tr><tr data-k="B11 纪念品店 公共服务区 公共服务 —"><td class="code" style="color:#8a5cd6">B11</td><td class="sn">35</td><td class="nm">纪念品店</td><td><span class="tag" style="--c:#8a5cd6">公共服务区</span></td><td class="cat">公共服务</td><td class="geo">31.18252, 121.60318</td><td class="org">—</td></tr><tr data-k="B12 行政中心 公共服务区 公共服务 党委办公室、校长办公室、科技发展处、国际事务处、人力资源处、财务处、公共服务处、基建管理中心、设备与资产处"><td class="code" style="color:#8a5cd6">B12</td><td class="sn">36</td><td class="nm">行政中心</td><td><span class="tag" style="--c:#8a5cd6">公共服务区</span></td><td class="cat">公共服务</td><td class="geo">31.18120, 121.59994</td><td class="org">党委办公室、校长办公室、科技发展处、国际事务处、人力资源处、财务处、公共服务处、基建管理中心、设备与资产处</td></tr><tr data-k="B13 图书馆 公共服务区 公共服务 图书信息中心"><td class="code" style="color:#8a5cd6">B13</td><td class="sn">37</td><td class="nm">图书馆</td><td><span class="tag" style="--c:#8a5cd6">公共服务区</span></td><td class="cat">公共服务</td><td class="geo">31.18118, 121.60323</td><td class="org">图书信息中心</td></tr><tr data-k="B14 上海科技大学东南门(环科路199号) 公共服务区 公共服务 —"><td class="code" style="color:#8a5cd6">B14</td><td class="sn">38</td><td class="nm">上海科技大学东南门(环科路199号)</td><td><span class="tag" style="--c:#8a5cd6">公共服务区</span></td><td class="cat">公共服务</td><td class="geo">31.18108, 121.60650</td><td class="org">—</td></tr><tr data-k="B15 上海科技大学南门(华夏中路393号) 公共服务区 公共服务 —"><td class="code" style="color:#8a5cd6">B15</td><td class="sn">39</td><td class="nm">上海科技大学南门(华夏中路393号)</td><td><span class="tag" style="--c:#8a5cd6">公共服务区</span></td><td class="cat">公共服务</td><td class="geo">31.17968, 121.60116</td><td class="org">—</td></tr><tr data-k="C01 游泳馆 体育运动区 体育运动 —"><td class="code" style="color:#d97706">C01</td><td class="sn">40</td><td class="nm">游泳馆</td><td><span class="tag" style="--c:#d97706">体育运动区</span></td><td class="cat">体育运动</td><td class="geo">31.18563, 121.60368</td><td class="org">—</td></tr><tr data-k="C02 网球场 体育运动区 体育运动 —"><td class="code" style="color:#d97706">C02</td><td class="sn">41</td><td class="nm">网球场</td><td><span class="tag" style="--c:#d97706">体育运动区</span></td><td class="cat">体育运动</td><td class="geo">31.18529, 121.60265</td><td class="org">—</td></tr><tr data-k="C03 排球场 体育运动区 体育运动 —"><td class="code" style="color:#d97706">C03</td><td class="sn">42</td><td class="nm">排球场</td><td><span class="tag" style="--c:#d97706">体育运动区</span></td><td class="cat">体育运动</td><td class="geo">31.18399, 121.60571</td><td class="org">—</td></tr><tr data-k="C04 篮球场 体育运动区 体育运动 —"><td class="code" style="color:#d97706">C04</td><td class="sn">43</td><td class="nm">篮球场</td><td><span class="tag" style="--c:#d97706">体育运动区</span></td><td class="cat">体育运动</td><td class="geo">31.18342, 121.60592</td><td class="org">—</td></tr><tr data-k="C05 健身场 体育运动区 体育运动 —"><td class="code" style="color:#d97706">C05</td><td class="sn">44</td><td class="nm">健身场</td><td><span class="tag" style="--c:#d97706">体育运动区</span></td><td class="cat">体育运动</td><td class="geo">31.18318, 121.60620</td><td class="org">—</td></tr><tr data-k="C06 体育馆 体育运动区 体育运动 —"><td class="code" style="color:#d97706">C06</td><td class="sn">45</td><td class="nm">体育馆</td><td><span class="tag" style="--c:#d97706">体育运动区</span></td><td class="cat">体育运动</td><td class="geo">31.18237, 121.60470</td><td class="org">—</td></tr><tr data-k="C07 体育场 体育运动区 体育运动 —"><td class="code" style="color:#d97706">C07</td><td class="sn">46</td><td class="nm">体育场</td><td><span class="tag" style="--c:#d97706">体育运动区</span></td><td class="cat">体育运动</td><td class="geo">31.18218, 121.60608</td><td class="org">—</td></tr><tr data-k="D01 丝路餐厅 餐饮服务区 食堂餐饮 —"><td class="code" style="color:#d94f6b">D01</td><td class="sn">47</td><td class="nm">丝路餐厅</td><td><span class="tag" style="--c:#d94f6b">餐饮服务区</span></td><td class="cat">食堂餐饮</td><td class="geo">31.18399, 121.60388</td><td class="org">—</td></tr><tr data-k="D02 尚科餐厅/西餐厅 餐饮服务区 食堂餐饮 —"><td class="code" style="color:#d94f6b">D02</td><td class="sn">48</td><td class="nm">尚科餐厅/西餐厅</td><td><span class="tag" style="--c:#d94f6b">餐饮服务区</span></td><td class="cat">食堂餐饮</td><td class="geo">31.18305, 121.60355</td><td class="org">—</td></tr><tr data-k="D03 白玉兰餐厅 餐饮服务区 食堂餐饮 —"><td class="code" style="color:#d94f6b">D03</td><td class="sn">49</td><td class="nm">白玉兰餐厅</td><td><span class="tag" style="--c:#d94f6b">餐饮服务区</span></td><td class="cat">食堂餐饮</td><td class="geo">31.18208, 121.60317</td><td class="org">—</td></tr><tr data-k="E01 学生公寓1号楼 学生生活区 学生公寓 —"><td class="code" style="color:#2f9e6e">E01</td><td class="sn">50</td><td class="nm">学生公寓1号楼</td><td><span class="tag" style="--c:#2f9e6e">学生生活区</span></td><td class="cat">学生公寓</td><td class="geo">31.18428, 121.60439</td><td class="org">—</td></tr><tr data-k="E02 学生公寓10号楼 学生生活区 学生公寓 —"><td class="code" style="color:#2f9e6e">E02</td><td class="sn">51</td><td class="nm">学生公寓10号楼</td><td><span class="tag" style="--c:#2f9e6e">学生生活区</span></td><td class="cat">学生公寓</td><td class="geo">31.18390, 121.60514</td><td class="org">—</td></tr><tr data-k="E03 学生公寓2号楼 学生生活区 学生公寓 —"><td class="code" style="color:#2f9e6e">E03</td><td class="sn">52</td><td class="nm">学生公寓2号楼</td><td><span class="tag" style="--c:#2f9e6e">学生生活区</span></td><td class="cat">学生公寓</td><td class="geo">31.18389, 121.60417</td><td class="org">—</td></tr><tr data-k="E04 学生公寓9号楼 学生生活区 学生公寓 —"><td class="code" style="color:#2f9e6e">E04</td><td class="sn">53</td><td class="nm">学生公寓9号楼</td><td><span class="tag" style="--c:#2f9e6e">学生生活区</span></td><td class="cat">学生公寓</td><td class="geo">31.18356, 121.60498</td><td class="org">—</td></tr><tr data-k="E05 学生公寓3号楼 学生生活区 学生公寓 —"><td class="code" style="color:#2f9e6e">E05</td><td class="sn">54</td><td class="nm">学生公寓3号楼</td><td><span class="tag" style="--c:#2f9e6e">学生生活区</span></td><td class="cat">学生公寓</td><td class="geo">31.18339, 121.60405</td><td class="org">—</td></tr><tr data-k="E06 学生公寓8号楼 学生生活区 学生公寓 students"><td class="code" style="color:#2f9e6e">E06</td><td class="sn">55</td><td class="nm">学生公寓8号楼</td><td><span class="tag" style="--c:#2f9e6e">学生生活区</span></td><td class="cat">学生公寓</td><td class="geo">31.18310, 121.60485</td><td class="org">students</td></tr><tr data-k="E07 学生公寓4号楼 学生生活区 学生公寓 —"><td class="code" style="color:#2f9e6e">E07</td><td class="sn">56</td><td class="nm">学生公寓4号楼</td><td><span class="tag" style="--c:#2f9e6e">学生生活区</span></td><td class="cat">学生公寓</td><td class="geo">31.18301, 121.60384</td><td class="org">—</td></tr><tr data-k="E08 学生公寓5号楼 学生生活区 学生公寓 —"><td class="code" style="color:#2f9e6e">E08</td><td class="sn">57</td><td class="nm">学生公寓5号楼</td><td><span class="tag" style="--c:#2f9e6e">学生生活区</span></td><td class="cat">学生公寓</td><td class="geo">31.18240, 121.60360</td><td class="org">—</td></tr><tr data-k="E09 学生公寓6号楼 学生生活区 学生公寓 —"><td class="code" style="color:#2f9e6e">E09</td><td class="sn">58</td><td class="nm">学生公寓6号楼</td><td><span class="tag" style="--c:#2f9e6e">学生生活区</span></td><td class="cat">学生公寓</td><td class="geo">31.18197, 121.60344</td><td class="org">—</td></tr><tr data-k="E10 学生公寓7号楼 学生生活区 学生公寓 —"><td class="code" style="color:#2f9e6e">E10</td><td class="sn">59</td><td class="nm">学生公寓7号楼</td><td><span class="tag" style="--c:#2f9e6e">学生生活区</span></td><td class="cat">学生公寓</td><td class="geo">31.18196, 121.60451</td><td class="org">—</td></tr><tr data-k="F01 教授公寓1号楼 教授公寓区 教授公寓 —"><td class="code" style="color:#0e8fa7">F01</td><td class="sn">60</td><td class="nm">教授公寓1号楼</td><td><span class="tag" style="--c:#0e8fa7">教授公寓区</span></td><td class="cat">教授公寓</td><td class="geo">31.18135, 121.60435</td><td class="org">—</td></tr><tr data-k="F02 教授公寓2号楼 教授公寓区 教授公寓 —"><td class="code" style="color:#0e8fa7">F02</td><td class="sn">61</td><td class="nm">教授公寓2号楼</td><td><span class="tag" style="--c:#0e8fa7">教授公寓区</span></td><td class="cat">教授公寓</td><td class="geo">31.18125, 121.60532</td><td class="org">—</td></tr><tr data-k="F03 教授公寓3号楼 教授公寓区 教授公寓 —"><td class="code" style="color:#0e8fa7">F03</td><td class="sn">62</td><td class="nm">教授公寓3号楼</td><td><span class="tag" style="--c:#0e8fa7">教授公寓区</span></td><td class="cat">教授公寓</td><td class="geo">31.18124, 121.60600</td><td class="org">—</td></tr><tr data-k="F04 教授公寓6号楼 教授公寓区 教授公寓 —"><td class="code" style="color:#0e8fa7">F04</td><td class="sn">63</td><td class="nm">教授公寓6号楼</td><td><span class="tag" style="--c:#0e8fa7">教授公寓区</span></td><td class="cat">教授公寓</td><td class="geo">31.18083, 121.60589</td><td class="org">—</td></tr><tr data-k="F05 教授公寓4号楼 教授公寓区 教授公寓 —"><td class="code" style="color:#0e8fa7">F05</td><td class="sn">64</td><td class="nm">教授公寓4号楼</td><td><span class="tag" style="--c:#0e8fa7">教授公寓区</span></td><td class="cat">教授公寓</td><td class="geo">31.18079, 121.60401</td><td class="org">—</td></tr><tr data-k="F06 教授公寓5号楼 教授公寓区 教授公寓 —"><td class="code" style="color:#0e8fa7">F06</td><td class="sn">65</td><td class="nm">教授公寓5号楼</td><td><span class="tag" style="--c:#0e8fa7">教授公寓区</span></td><td class="cat">教授公寓</td><td class="geo">31.18075, 121.60490</td><td class="org">—</td></tr></tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>五、塔防游戏 BGM 曲库（17 首）</h2>
+  <p class="note" style="margin-bottom:14px">
+  不再按建筑分配，改为按<b>游戏环节</b>组织：主菜单、世界地图、建造、战斗、Boss、恐怖氛围、绝境、胜负结算、商店、各主题关卡、终章。<br>
+  每首 <b>4–5 分钟</b>，结构为 前奏 → A → A2（进鼓）→ B（主题）→ A3 → C（高潮）→ 尾奏，可整首循环。整体参考
+  <b>《胡闹厨房 2》</b>的跳跃律动、<b>《超级马力欧》</b>的主题旋律感、<b>《文明 6》</b>的史诗管弦与合唱。
+  </p>
+  <div class="tools">
+    <input type="search" id="q2" placeholder="输入场景 / 曲名 / 风格关键词过滤，例如：恐怖、胜利、主菜单">
+    <span id="cnt2"></span>
+  </div>
+  <div class="grid"><article class="card" data-k="主菜单 星港序曲 《文明6》主菜单的史诗铺陈 + 《超级马力欧》的主题旋律感 电钢琴领奏的温柔主题，鼓组自 1:00 起以刷子军鼓与轻踩镲渐入、不抢戏；1:31 主题后半改成上行的变奏，不再原样重复；2:03 换入下行过渡旋律，同时合唱、铜管、低音弦乐依次进入做渐强，2:50 顺着这股劲推进管弦高潮；3:42 收束，末段回到开头的织体，循环点落在主题句中间，接回去听不出接缝">
+  <header class="card-h">
+    <span class="badge" style="background:#2f6fb3">01</span>
+    <h3>主菜单　<b>星港序曲</b></h3>
+    <span class="pill" style="--c:#2f6fb3">4.0 分</span>
+  </header>
+  <p class="mood">电钢琴领奏的温柔主题，鼓组自 1:00 起以刷子军鼓与轻踩镲渐入、不抢戏；1:31 主题后半改成上行的变奏，不再原样重复；2:03 换入下行过渡旋律，同时合唱、铜管、低音弦乐依次进入做渐强，2:50 顺着这股劲推进管弦高潮；3:42 收束，末段回到开头的织体，循环点落在主题句中间，接回去听不出接缝</p>
+  <p class="meta">92 BPM　·　C4 自然大调　·　《文明6》主菜单的史诗铺陈 + 《超级马力欧》的主题旋律感</p>
+  <audio controls preload="none" src="../%E4%B8%8A%E7%A7%91%E5%A4%A7%E6%A0%A1%E5%9B%ADBGM%E6%9B%B2%E5%BA%93/01_%E4%B8%BB%E8%8F%9C%E5%8D%95_%E6%98%9F%E6%B8%AF%E5%BA%8F%E6%9B%B2.mp3"></audio>
+</article><article class="card" data-k="世界地图 征途 《文明6》大地图的进行曲气质 圆号号角开场定调，行军低音与定音鼓推进；主题是附点八分＋十六分的上行拱形动机，最高点落在 A5 再级进回落，便于记忆；答句段换和声起点、改长音气息；2:18 圆号以低八度对位先埋，2:58 圆号齐奏主旋律进入高潮">
+  <header class="card-h">
+    <span class="badge" style="background:#2f6fb3">02</span>
+    <h3>世界地图　<b>征途</b></h3>
+    <span class="pill" style="--c:#2f6fb3">4.4 分</span>
+  </header>
+  <p class="mood">圆号号角开场定调，行军低音与定音鼓推进；主题是附点八分＋十六分的上行拱形动机，最高点落在 A5 再级进回落，便于记忆；答句段换和声起点、改长音气息；2:18 圆号以低八度对位先埋，2:58 圆号齐奏主旋律进入高潮</p>
+  <p class="meta">104 BPM　·　G3 混合利底亚调式　·　《文明6》大地图的进行曲气质</p>
+  <audio controls preload="none" src="../%E4%B8%8A%E7%A7%91%E5%A4%A7%E6%A0%A1%E5%9B%ADBGM%E6%9B%B2%E5%BA%93/02_%E4%B8%96%E7%95%8C%E5%9C%B0%E5%9B%BE_%E5%BE%81%E9%80%94.mp3"></audio>
+</article><article class="card" data-k="建造阶段 备防时刻 《胡闹厨房2》的跳跃爵士律动 拨弦 + 木琴的轻盈跳跃，节奏俏皮不吵闹，适合摆放炮塔、升级的建造阶段">
+  <header class="card-h">
+    <span class="badge" style="background:#2f6fb3">03</span>
+    <h3>建造阶段　<b>备防时刻</b></h3>
+    <span class="pill" style="--c:#2f6fb3">4.5 分</span>
+  </header>
+  <p class="mood">拨弦 + 木琴的轻盈跳跃，节奏俏皮不吵闹，适合摆放炮塔、升级的建造阶段</p>
+  <p class="meta">120 BPM　·　F4 自然大调　·　《胡闹厨房2》的跳跃爵士律动</p>
+  <audio controls preload="none" src="../%E4%B8%8A%E7%A7%91%E5%A4%A7%E6%A0%A1%E5%9B%ADBGM%E6%9B%B2%E5%BA%93/03_%E5%BB%BA%E9%80%A0%E9%98%B6%E6%AE%B5_%E5%A4%87%E9%98%B2%E6%97%B6%E5%88%BB.mp3"></audio>
+</article><article class="card" data-k="战斗·普通波次 第一波 塔防标准战斗曲 + 电子脉冲 十六分音符固定音型与驱动低音，标准战斗推进，紧张但可长时间循环">
+  <header class="card-h">
+    <span class="badge" style="background:#2f6fb3">04</span>
+    <h3>战斗·普通波次　<b>第一波</b></h3>
+    <span class="pill" style="--c:#2f6fb3">4.4 分</span>
+  </header>
+  <p class="mood">十六分音符固定音型与驱动低音，标准战斗推进，紧张但可长时间循环</p>
+  <p class="meta">132 BPM　·　A3 自然小调　·　塔防标准战斗曲 + 电子脉冲</p>
+  <audio controls preload="none" src="../%E4%B8%8A%E7%A7%91%E5%A4%A7%E6%A0%A1%E5%9B%ADBGM%E6%9B%B2%E5%BA%93/04_%E6%88%98%E6%96%97%C2%B7%E6%99%AE%E9%80%9A%E6%B3%A2%E6%AC%A1_%E7%AC%AC%E4%B8%80%E6%B3%A2.mp3"></audio>
+</article><article class="card" data-k="战斗·密集波次 潮涌 塔防高密度波次 更快、更密、更凶，和声小调的增二度带来攻击性，适合敌人成堆涌来的波次">
+  <header class="card-h">
+    <span class="badge" style="background:#2f6fb3">05</span>
+    <h3>战斗·密集波次　<b>潮涌</b></h3>
+    <span class="pill" style="--c:#2f6fb3">4.5 分</span>
+  </header>
+  <p class="mood">更快、更密、更凶，和声小调的增二度带来攻击性，适合敌人成堆涌来的波次</p>
+  <p class="meta">140 BPM　·　D3 和声小调　·　塔防高密度波次</p>
+  <audio controls preload="none" src="../%E4%B8%8A%E7%A7%91%E5%A4%A7%E6%A0%A1%E5%9B%ADBGM%E6%9B%B2%E5%BA%93/05_%E6%88%98%E6%96%97%C2%B7%E5%AF%86%E9%9B%86%E6%B3%A2%E6%AC%A1_%E6%BD%AE%E6%B6%8C.mp3"></audio>
+</article><article class="card" data-k="Boss 战 巨影降临 《文明6》的战争主题 + 低音铜管 弗里吉亚调式的压迫感，低音铜管与合唱，持续低音嗡鸣，Boss 登场">
+  <header class="card-h">
+    <span class="badge" style="background:#2f6fb3">06</span>
+    <h3>Boss 战　<b>巨影降临</b></h3>
+    <span class="pill" style="--c:#2f6fb3">4.5 分</span>
+  </header>
+  <p class="mood">弗里吉亚调式的压迫感，低音铜管与合唱，持续低音嗡鸣，Boss 登场</p>
+  <p class="meta">126 BPM　·　E3 弗里吉亚调式　·　《文明6》的战争主题 + 低音铜管</p>
+  <audio controls preload="none" src="../%E4%B8%8A%E7%A7%91%E5%A4%A7%E6%A0%A1%E5%9B%ADBGM%E6%9B%B2%E5%BA%93/06_Boss%20%E6%88%98_%E5%B7%A8%E5%BD%B1%E9%99%8D%E4%B8%B4.mp3"></audio>
+</article><article class="card" data-k="恐怖氛围 迷雾回廊 恐怖游戏的氛围铺垫（无鼓、音簇、低频嗡鸣） 几乎没有节奏与旋律，小二度音簇、超低频嗡鸣和 4.4 秒混响堆出不安，适合探索黑暗走廊、剧情铺垫">
+  <header class="card-h">
+    <span class="badge" style="background:#2f6fb3">07</span>
+    <h3>恐怖氛围　<b>迷雾回廊</b></h3>
+    <span class="pill" style="--c:#2f6fb3">4.4 分</span>
+  </header>
+  <p class="mood">几乎没有节奏与旋律，小二度音簇、超低频嗡鸣和 4.4 秒混响堆出不安，适合探索黑暗走廊、剧情铺垫</p>
+  <p class="meta">52 BPM　·　F3 弗里吉亚调式　·　恐怖游戏的氛围铺垫（无鼓、音簇、低频嗡鸣）</p>
+  <audio controls preload="none" src="../%E4%B8%8A%E7%A7%91%E5%A4%A7%E6%A0%A1%E5%9B%ADBGM%E6%9B%B2%E5%BA%93/07_%E6%81%90%E6%80%96%E6%B0%9B%E5%9B%B4_%E8%BF%B7%E9%9B%BE%E5%9B%9E%E5%BB%8A.mp3"></audio>
+</article><article class="card" data-k="恐怖·追逐 心跳追逐 恐怖追逐段（心跳节拍 + 尖锐高频） 心跳般的双拍低音与半音摩擦，被追赶的窒息感，但节奏已成型可战斗">
+  <header class="card-h">
+    <span class="badge" style="background:#2f6fb3">08</span>
+    <h3>恐怖·追逐　<b>心跳追逐</b></h3>
+    <span class="pill" style="--c:#2f6fb3">4.4 分</span>
+  </header>
+  <p class="mood">心跳般的双拍低音与半音摩擦，被追赶的窒息感，但节奏已成型可战斗</p>
+  <p class="meta">112 BPM　·　F#3 弗里吉亚调式　·　恐怖追逐段（心跳节拍 + 尖锐高频）</p>
+  <audio controls preload="none" src="../%E4%B8%8A%E7%A7%91%E5%A4%A7%E6%A0%A1%E5%9B%ADBGM%E6%9B%B2%E5%BA%93/08_%E6%81%90%E6%80%96%C2%B7%E8%BF%BD%E9%80%90_%E5%BF%83%E8%B7%B3%E8%BF%BD%E9%80%90.mp3"></audio>
+</article><article class="card" data-k="绝境 最后一波 塔防最终波次的高压推进 最快、最满、最亮，全乐器齐上，玩家血线告急时的背水一战">
+  <header class="card-h">
+    <span class="badge" style="background:#2f6fb3">09</span>
+    <h3>绝境　<b>最后一波</b></h3>
+    <span class="pill" style="--c:#2f6fb3">4.5 分</span>
+  </header>
+  <p class="mood">最快、最满、最亮，全乐器齐上，玩家血线告急时的背水一战</p>
+  <p class="meta">148 BPM　·　A3 和声小调　·　塔防最终波次的高压推进</p>
+  <audio controls preload="none" src="../%E4%B8%8A%E7%A7%91%E5%A4%A7%E6%A0%A1%E5%9B%ADBGM%E6%9B%B2%E5%BA%93/09_%E7%BB%9D%E5%A2%83_%E6%9C%80%E5%90%8E%E4%B8%80%E6%B3%A2.mp3"></audio>
+</article><article class="card" data-k="胜利结算 凯旋 《文明6》胜利结算的凯旋颂歌 大调号角 + 合唱 + 定音鼓，明亮上扬，通关结算的成就感">
+  <header class="card-h">
+    <span class="badge" style="background:#2f6fb3">10</span>
+    <h3>胜利结算　<b>凯旋</b></h3>
+    <span class="pill" style="--c:#2f6fb3">4.4 分</span>
+  </header>
+  <p class="mood">大调号角 + 合唱 + 定音鼓，明亮上扬，通关结算的成就感</p>
+  <p class="meta">112 BPM　·　C4 自然大调　·　《文明6》胜利结算的凯旋颂歌</p>
+  <audio controls preload="none" src="../%E4%B8%8A%E7%A7%91%E5%A4%A7%E6%A0%A1%E5%9B%ADBGM%E6%9B%B2%E5%BA%93/10_%E8%83%9C%E5%88%A9%E7%BB%93%E7%AE%97_%E5%87%AF%E6%97%8B.mp3"></audio>
+</article><article class="card" data-k="失败结算 余烬 失败结算的挽歌（缓慢、克制、不煽情） 钢琴般清亮的独奏旋律 + 铃音，慢速小调但不阴森，失守后的余温，允许玩家平静地重来">
+  <header class="card-h">
+    <span class="badge" style="background:#2f6fb3">11</span>
+    <h3>失败结算　<b>余烬</b></h3>
+    <span class="pill" style="--c:#2f6fb3">4.5 分</span>
+  </header>
+  <p class="mood">钢琴般清亮的独奏旋律 + 铃音，慢速小调但不阴森，失守后的余温，允许玩家平静地重来</p>
+  <p class="meta">80 BPM　·　G3 自然小调　·　失败结算的挽歌（缓慢、克制、不煽情）</p>
+  <audio controls preload="none" src="../%E4%B8%8A%E7%A7%91%E5%A4%A7%E6%A0%A1%E5%9B%ADBGM%E6%9B%B2%E5%BA%93/11_%E5%A4%B1%E8%B4%A5%E7%BB%93%E7%AE%97_%E4%BD%99%E7%83%AC.mp3"></audio>
+</article><article class="card" data-k="商店·升级 军械库 《超级马力欧》商店曲的俏皮感 木琴与铃音叮当作响，轻快讨喜，逛商店、买装备时的愉悦感">
+  <header class="card-h">
+    <span class="badge" style="background:#2f6fb3">12</span>
+    <h3>商店·升级　<b>军械库</b></h3>
+    <span class="pill" style="--c:#2f6fb3">4.4 分</span>
+  </header>
+  <p class="mood">木琴与铃音叮当作响，轻快讨喜，逛商店、买装备时的愉悦感</p>
+  <p class="meta">132 BPM　·　G4 利底亚调式　·　《超级马力欧》商店曲的俏皮感</p>
+  <audio controls preload="none" src="../%E4%B8%8A%E7%A7%91%E5%A4%A7%E6%A0%A1%E5%9B%ADBGM%E6%9B%B2%E5%BA%93/12_%E5%95%86%E5%BA%97%C2%B7%E5%8D%87%E7%BA%A7_%E5%86%9B%E6%A2%B0%E5%BA%93.mp3"></audio>
+</article><article class="card" data-k="雪原关 霜境 冰雪关的明亮空灵感（玻璃质音色） 利底亚调式的透亮，铃音与高把位琶音，寒冷但通透的雪原">
+  <header class="card-h">
+    <span class="badge" style="background:#2f6fb3">13</span>
+    <h3>雪原关　<b>霜境</b></h3>
+    <span class="pill" style="--c:#2f6fb3">4.5 分</span>
+  </header>
+  <p class="mood">利底亚调式的透亮，铃音与高把位琶音，寒冷但通透的雪原</p>
+  <p class="meta">110 BPM　·　D4 利底亚调式　·　冰雪关的明亮空灵感（玻璃质音色）</p>
+  <audio controls preload="none" src="../%E4%B8%8A%E7%A7%91%E5%A4%A7%E6%A0%A1%E5%9B%ADBGM%E6%9B%B2%E5%BA%93/13_%E9%9B%AA%E5%8E%9F%E5%85%B3_%E9%9C%9C%E5%A2%83.mp3"></audio>
+</article><article class="card" data-k="沙漠关 沙暴 异域音阶 + 手鼓的沙丘行进 弗里吉亚的东方色彩与手鼓律动，风沙、驼队、热浪">
+  <header class="card-h">
+    <span class="badge" style="background:#2f6fb3">14</span>
+    <h3>沙漠关　<b>沙暴</b></h3>
+    <span class="pill" style="--c:#2f6fb3">4.5 分</span>
+  </header>
+  <p class="mood">弗里吉亚的东方色彩与手鼓律动，风沙、驼队、热浪</p>
+  <p class="meta">118 BPM　·　G3 弗里吉亚调式　·　异域音阶 + 手鼓的沙丘行进</p>
+  <audio controls preload="none" src="../%E4%B8%8A%E7%A7%91%E5%A4%A7%E6%A0%A1%E5%9B%ADBGM%E6%9B%B2%E5%BA%93/14_%E6%B2%99%E6%BC%A0%E5%85%B3_%E6%B2%99%E6%9A%B4.mp3"></audio>
+</article><article class="card" data-k="深林关 幽林 五声音阶 + 木质音色的森林主题 五声音阶的东方/田园色彩，木琴与柔和长音，林间潜行">
+  <header class="card-h">
+    <span class="badge" style="background:#2f6fb3">15</span>
+    <h3>深林关　<b>幽林</b></h3>
+    <span class="pill" style="--c:#2f6fb3">4.5 分</span>
+  </header>
+  <p class="mood">五声音阶的东方/田园色彩，木琴与柔和长音，林间潜行</p>
+  <p class="meta">100 BPM　·　A3 小调五声　·　五声音阶 + 木质音色的森林主题</p>
+  <audio controls preload="none" src="../%E4%B8%8A%E7%A7%91%E5%A4%A7%E6%A0%A1%E5%9B%ADBGM%E6%9B%B2%E5%BA%93/15_%E6%B7%B1%E6%9E%97%E5%85%B3_%E5%B9%BD%E6%9E%97.mp3"></audio>
+</article><article class="card" data-k="最终关·片尾 星海终章 《文明6》终局的宏大合唱 最恢弘的一首，合唱 + 铜管 + 定音鼓层层叠加，降 E 大调的厚重感收束整个战役">
+  <header class="card-h">
+    <span class="badge" style="background:#2f6fb3">16</span>
+    <h3>最终关·片尾　<b>星海终章</b></h3>
+    <span class="pill" style="--c:#2f6fb3">4.4 分</span>
+  </header>
+  <p class="mood">最恢弘的一首，合唱 + 铜管 + 定音鼓层层叠加，降 E 大调的厚重感收束整个战役</p>
+  <p class="meta">84 BPM　·　D#4 自然大调　·　《文明6》终局的宏大合唱</p>
+  <audio controls preload="none" src="../%E4%B8%8A%E7%A7%91%E5%A4%A7%E6%A0%A1%E5%9B%ADBGM%E6%9B%B2%E5%BA%93/16_%E6%9C%80%E7%BB%88%E5%85%B3%C2%B7%E7%89%87%E5%B0%BE_%E6%98%9F%E6%B5%B7%E7%BB%88%E7%AB%A0.mp3"></audio>
+</article><article class="card mash" data-k="A01 人字楼串烧 夜航→求知→防线 由 A01 人字楼原有三首改编串联 夜航实验室 → 求知序曲 → 防线·数据风暴，中间补写两段过渡与尾奏；段落：30小节@94bpm + 8小节@100bpm + 40小节@112bpm + 8小节@118bpm + 34小节@129bpm + 8小节@120bpm">
+  <header class="card-h">
+    <span class="badge" style="background:#b8860b">17</span>
+    <h3>A01 人字楼串烧　<b>夜航→求知→防线</b></h3>
+    <span class="pill" style="--c:#b8860b">4.7 分</span>
+  </header>
+  <p class="mood">夜航实验室 → 求知序曲 → 防线·数据风暴，中间补写两段过渡与尾奏；段落：30小节@94bpm + 8小节@100bpm + 40小节@112bpm + 8小节@118bpm + 34小节@129bpm + 8小节@120bpm</p>
+  <p class="meta">94→100→112→118→129→120 BPM　·　G#3 多利亚/自然小调/和声小调　·　由 A01 人字楼原有三首改编串联</p>
+  <audio controls preload="none" src="../%E4%B8%8A%E7%A7%91%E5%A4%A7%E6%A0%A1%E5%9B%ADBGM%E6%9B%B2%E5%BA%93/17_A01%E4%BA%BA%E5%AD%97%E6%A5%BC_%E4%B8%B2%E7%83%A7_%E5%A4%9C%E8%88%AA%E2%86%92%E6%B1%82%E7%9F%A5%E2%86%92%E9%98%B2%E7%BA%BF.mp3"></audio>
+</article></div>
+</section>
+
+<footer>数据整理与配乐生成：WorkBuddy AI　·　配乐为程序化生成的原创器乐，可自由用于演示与二次创作。</footer>
+</div>
+<script>
+function bind(inp,cnt,sel,total){
+  const items=[...document.querySelectorAll(sel)];
+  function flt(){
+    const k=inp.value.trim().toLowerCase();let n=0;
+    items.forEach(el=>{const hit=!k||el.dataset.k.toLowerCase().includes(k);el.classList.toggle('hide',!hit);if(hit)n++;});
+    cnt.textContent=k?`命中 ${n} / ${total} 条`:`共 ${total} 条`;
+  }
+  inp.addEventListener('input',flt);flt();
+}
+bind(document.getElementById('q'),document.getElementById('cnt'),'#tbl tbody tr',65);
+bind(document.getElementById('q2'),document.getElementById('cnt2'),'.card',17);
+</script></body></html>
