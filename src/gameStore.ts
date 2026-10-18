@@ -84,7 +84,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       const parsed: unknown = raw ? JSON.parse(raw) : null
       if (!validSave(parsed)) return false
       const version = parsed.version as number
-      const levelId: LevelId = parsed.levelId === 1 || parsed.levelId === 2 || parsed.levelId === 3 ? parsed.levelId : 1
+      const levelId: LevelId = 1
       const hasCardState = version >= 3 && Array.isArray(parsed.offeredCards)
       set({ ...initial(), levelId, levelComplete: Boolean(parsed.levelComplete), cardPhase: hasCardState ? parsed.cardPhase : 'draw', offeredCards: hasCardState ? parsed.offeredCards : drawOpeningCards(1).map((card) => card.id), chosenCardId: hasCardState ? parsed.chosenCardId : null, cardModifiers: hasCardState ? parsed.cardModifiers : {}, credits: roundCredits(parsed.credits), core: Math.round(parsed.core), wave: Math.max(0, Math.floor(parsed.wave)), towers: parsed.towers, message: hasCardState ? '本地存档已恢复。' : '旧存档已恢复，请先开启本局命运盲盒。' })
       return true

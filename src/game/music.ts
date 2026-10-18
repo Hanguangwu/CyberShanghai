@@ -1,51 +1,42 @@
-const NOTES = [220, 261.63, 293.66, 329.63, 392, 440]
+export type MusicMode = 'menu' | 'gameplay'
+
+const MENU_TRACK = 'campus_dawn_menu.mp3'
+const GAMEPLAY_TRACKS = ['defense_phase_shift.mp3', 'laboratory_gears.mp3', 'midnight_lockdown.mp3', 'starlight_honors.mp3']
+const assetUrl = (file: string) => `${import.meta.env.BASE_URL}audios/${file}`
 
 export class MusicController {
-  private context: AudioContext | null = null
-  private gain: GainNode | null = null
-  private timer: number | null = null
-  private step = 0
-  private playing = false
+  private audio: HTMLAudioElement | null = null
+  private mode: MusicMode | null = null
+  private enabled = true
+  private volume = 0.42
+  private bag: string[] = []
 
-  start() {
-    if (this.playing) return
-    const AudioContextClass = window.AudioContext ?? window.webkitAudioContext
-    if (!AudioContextClass) return
-    this.context ??= new AudioContextClass()
-    this.gain ??= this.context.createGain()
-    this.gain.gain.value = 0.035
-    this.gain.connect(this.context.destination)
-    void this.context.resume()
-    this.playing = true
-    this.playNote()
-    this.timer = window.setInterval(() => this.playNote(), 600)
+  start(mode: MusicMode) {
+    this.mode = mode
+    if (!this.enabled) return
+    this.audio?.pause()
+    const file = mode === 'menu' ? MENU_TRACK : this.nextGameplayTrack()
+    const audio = new Audio(assetUrl(file))
+    audio.volume = this.volume
+    audio.onended = () => { if (this.mode === 'gameplay' && this.enabled) this.start('gameplay') }
+    this.audio = audio
+    void audio.play().catch(() => undefined)
   }
 
   stop() {
-    if (this.timer !== null) window.clearInterval(this.timer)
-    this.timer = null
-    this.playing = false
+    this.audio?.pause()
+    if (this.audio) this.audio.currentTime = 0
+    this.audio = null
+    this.mode = null
   }
 
-  toggle() { if (this.playing) this.stop(); else this.start(); return this.playing }
-  isPlaying() { return this.playing }
+  toggle() { this.enabled = !this.enabled; if (!this.enabled) this.stop(); return this.enabled }
+  setVolume(value: number) { this.volume = Math.max(0, Math.min(1, value)); if (this.audio) this.audio.volume = this.volume }
+  isEnabled() { return this.enabled }
+  dispose() { this.stop() }
 
-  private playNote() {
-    if (!this.context || !this.gain) return
-    const oscillator = this.context.createOscillator()
-    const envelope = this.context.createGain()
-    oscillator.type = 'triangle'
-    oscillator.frequency.value = NOTES[this.step % NOTES.length]
-    envelope.gain.setValueAtTime(0.001, this.context.currentTime)
-    envelope.gain.exponentialRampToValueAtTime(0.15, this.context.currentTime + 0.025)
-    envelope.gain.exponentialRampToValueAtTime(0.001, this.context.currentTime + 0.5)
-    oscillator.connect(envelope).connect(this.gain)
-    oscillator.start()
-    oscillator.stop(this.context.currentTime + 0.52)
-    this.step += 1
+  private nextGameplayTrack() {
+    if (this.bag.length === 0) this.bag = [...GAMEPLAY_TRACKS].sort(() => Math.random() - 0.5)
+    return this.bag.pop() ?? GAMEPLAY_TRACKS[0]
   }
-
-  dispose() { this.stop(); void this.context?.close() }
 }
-
-declare global { interface Window { webkitAudioContext?: typeof AudioContext } }

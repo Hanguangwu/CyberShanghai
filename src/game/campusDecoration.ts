@@ -33,19 +33,26 @@ function campusBuilding(x: number, z: number, width: number, depth: number, heig
   return building
 }
 
-export function createCampusDecoration(): THREE.Group {
+function energyCenter(): THREE.Group {
+  const group = new THREE.Group()
+  const base = new THREE.Mesh(new THREE.BoxGeometry(8, 0.35, 10), new THREE.MeshStandardMaterial({ color: '#27384d', roughness: 0.8 }))
+  base.position.set(-52, 0.18, 0); group.add(base)
+  const material = new THREE.MeshStandardMaterial({ color: '#e6b957', emissive: '#a96d20', emissiveIntensity: 1.2, metalness: 0.35 })
+  for (const z of [-3, 0, 3]) { const tower = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 1.1, 5.5, 8), material); tower.position.set(-52, 2.9, z); group.add(tower) }
+  return group
+}
+
+export function createCampusDecoration(includeFallbackBuildings = true): THREE.Group {
   const group = new THREE.Group()
   for (const route of CAMPUS_ROUTES) for (let index = 0; index < route.points.length - 1; index += 1) group.add(roadSegment(route.points[index], route.points[index + 1]))
+  group.add(energyCenter())
 
   // Buildings are deliberately generated outside the navigation graph: the graph owns walkable roads,
   // while this layer provides readable campus massing without letting an imported GLB occlude gameplay.
-  group.add(
-    campusBuilding(-28, 12, 9, 7, 5.5, '#4d6285'),
-    campusBuilding(-14, -26, 11, 6, 4.2, '#536b8c'),
-    campusBuilding(10, 30, 13, 8, 6.5, '#455c80'),
-    campusBuilding(28, -18, 8, 12, 5, '#5e6f8b'),
-    campusBuilding(18, 8, 7, 7, 3.5, '#687b98'),
-    campusBuilding(-34, 34, 10, 6, 4.8, '#3f587c'),
+  if (includeFallbackBuildings) group.add(
+    campusBuilding(-28, 12, 9, 7, 5.5, '#4d6285'), campusBuilding(-14, -26, 11, 6, 4.2, '#536b8c'),
+    campusBuilding(10, 30, 13, 8, 6.5, '#455c80'), campusBuilding(28, -18, 8, 12, 5, '#5e6f8b'),
+    campusBuilding(18, 8, 7, 7, 3.5, '#687b98'), campusBuilding(-34, 34, 10, 6, 4.8, '#3f587c'),
   )
 
   const random = seeded(20261017)

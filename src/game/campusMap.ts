@@ -10,18 +10,18 @@ export type NavigationPath = {
 export type CampusRoute = { id: string; points: CampusPoint[] }
 
 export const CAMPUS_SCALE = 1
-export const CAMPUS_BOUNDS = { minX: -50, maxX: 50, minZ: -50, maxZ: 50 }
-export const CAMPUS_SPAWN: CampusPoint = { x: -46 * CAMPUS_SCALE, z: -34 * CAMPUS_SCALE }
-export const CAMPUS_CORE: CampusPoint = { x: 44 * CAMPUS_SCALE, z: 0 }
+export const CAMPUS_BOUNDS = { minX: -60, maxX: 60, minZ: -50, maxZ: 50 }
+export const CAMPUS_SPAWN: CampusPoint = { x: 52 * CAMPUS_SCALE, z: 0 }
+export const CAMPUS_CORE: CampusPoint = { x: -52 * CAMPUS_SCALE, z: 0 }
 export const CAMPUS_ROAD_WIDTH = 4 * CAMPUS_SCALE
-const BASE_CORE: CampusPoint = { x: 44, z: 0 }
+const BASE_CORE: CampusPoint = { x: -52, z: 0 }
 
 // Temporary routes are authored independently from the GLB. Replace these points when campus.glb gets its road plan.
 const BASE_ROUTES: CampusRoute[] = [
-  { id: 'north-loop', points: [{ x: -46, z: -34 }, { x: -32, z: -34 }, { x: -32, z: -12 }, { x: -8, z: -12 }, { x: -8, z: 18 }, { x: 18, z: 18 }, { x: 18, z: 0 }, BASE_CORE] },
-  { id: 'library-avenue', points: [{ x: -46, z: -34 }, { x: -22, z: -34 }, { x: -22, z: 6 }, { x: 4, z: 6 }, { x: 4, z: -24 }, { x: 28, z: -24 }, { x: 28, z: 0 }, BASE_CORE] },
-  { id: 'dormitory-road', points: [{ x: -46, z: -34 }, { x: -46, z: 24 }, { x: -18, z: 24 }, { x: -18, z: 38 }, { x: 30, z: 38 }, { x: 30, z: 0 }, BASE_CORE] },
-  { id: 'sports-road', points: [{ x: -46, z: -34 }, { x: -6, z: -34 }, { x: -6, z: -42 }, { x: 34, z: -42 }, { x: 34, z: 0 }, BASE_CORE] },
+  { id: 'north-campus-loop', points: [{ x: 52, z: 0 }, { x: 42, z: 0 }, { x: 42, z: 28 }, { x: 18, z: 28 }, { x: -12, z: 28 }, { x: -34, z: 28 }, { x: -34, z: 0 }, BASE_CORE] },
+  { id: 'main-avenue', points: [{ x: 52, z: 0 }, { x: 30, z: 0 }, { x: 0, z: 0 }, { x: -25, z: 0 }, BASE_CORE] },
+  { id: 'science-loop', points: [{ x: 52, z: 0 }, { x: 38, z: 0 }, { x: 38, z: 12 }, { x: 10, z: 12 }, { x: -18, z: 12 }, { x: -28, z: 12 }, { x: -28, z: 0 }, BASE_CORE] },
+  { id: 'south-campus-loop', points: [{ x: 52, z: 0 }, { x: 42, z: 0 }, { x: 42, z: -28 }, { x: 18, z: -28 }, { x: -12, z: -28 }, { x: -36, z: -28 }, { x: -36, z: 0 }, BASE_CORE] },
 ]
 export const CAMPUS_ROUTES: CampusRoute[] = BASE_ROUTES.map((route) => ({ id: route.id, points: route.points.map((point) => ({ x: point.x * CAMPUS_SCALE, z: point.z * CAMPUS_SCALE })) }))
 

@@ -7,23 +7,24 @@ import { drawOpeningCards, getCard } from '../src/game/cards.ts'
 import { useGameStore } from '../src/gameStore.ts'
 import { allCampusRoutesReachCore, getWavePath } from '../src/game/campusMap.ts'
 
-const towers = [{ id: 1, x: -42, z: -34, type: 'pulse' as const, level: 1, cooldown: 0 }]
-assert.equal(canBuildAt(-30, -34, towers), true)
-assert.equal(canBuildAt(-42, -34, towers), false)
-assert.equal(canBuildAt(45, 45, towers), false)
+const towers = [{ id: 1, x: 48, z: 0, type: 'pulse' as const, level: 1, cooldown: 0 }]
+assert.equal(canBuildAt(36, 0, towers), true)
+assert.equal(canBuildAt(48, 0, towers), false)
+assert.equal(canBuildAt(-60, 45, towers), false)
 assert.equal(upgradeCost(towers[0]), 100)
 assert.equal(sellValue(towers[0]), 100)
 assert.equal(spawnWave(1).length, 5)
 assert.equal(spawnWave(6).some((enemy) => enemy.type === 'boss'), true)
-assert.equal(towerDistanceToEnemy(towers[0], { id: 2, type: 'beetle', hp: 90, path: getWavePath(1), pathProgress: 8, position: { x: -42, z: -34 }, slowUntil: 0, stunnedUntil: 0, poisonUntil: 0 }) <= 5.3, true)
-assert.equal(towerDistanceToEnemy({ ...towers[0], x: -30 }, { id: 3, type: 'beetle', hp: 90, path: getWavePath(1), pathProgress: 0, position: { x: -46, z: -34 }, slowUntil: 0, stunnedUntil: 0, poisonUntil: 0 }) <= 5.3, false)
+assert.equal(towerDistanceToEnemy(towers[0], { id: 2, type: 'beetle', hp: 90, path: getWavePath(1), pathProgress: 8, position: { x: 48, z: 0 }, slowUntil: 0, stunnedUntil: 0, poisonUntil: 0 }) <= 5.3, true)
+assert.equal(towerDistanceToEnemy({ ...towers[0], x: 30 }, { id: 3, type: 'beetle', hp: 90, path: getWavePath(1), pathProgress: 0, position: { x: 52, z: 0 }, slowUntil: 0, stunnedUntil: 0, poisonUntil: 0 }) <= 5.3, false)
 assert.equal(allCampusRoutesReachCore(), true)
 assert.notEqual(getWavePath(1).id, getWavePath(2).id)
 assert.equal(Object.keys(TOWER_DATA).length, 6)
 assert.equal(Object.values(TOWER_DATA).every((tower) => tower.cost % 100 === 0 && tower.damage % 100 === 0), true)
 assert.equal(Object.values(ENEMY_DATA).every((enemy) => Number.isInteger(enemy.reward) && enemy.reward > 0 && Number.isInteger(enemy.damage) && enemy.damage > 0), true)
 assert.equal(Object.keys(ENEMY_DATA).length, 3)
-assert.equal(Object.keys(LEVELS).length, 3)
+assert.deepEqual(Object.values(ENEMY_DATA).map((enemy) => enemy.label), ['虫子', '机器人', '鲸鱼'])
+assert.equal(Object.keys(LEVELS).length, 1)
 assert.equal(LEVELS[1].startingCredits > 420, true)
 assert.equal(LEVELS[1].clearReward > 0, true)
 assert.equal(drawOpeningCards(3, () => 0.25).length, 3)
@@ -51,7 +52,7 @@ useGameStore.getState().openBlindBox()
 assert.equal(useGameStore.getState().cardPhase, 'ready')
 const storage = { value: null as string | null, getItem: () => storage.value, setItem: (_key: string, value: string) => { storage.value = value } }
 Object.defineProperty(globalThis, 'localStorage', { configurable: true, value: storage })
-useGameStore.getState().buildAt(-42, -34)
+useGameStore.getState().buildAt(48, 0)
 const savedCredits = useGameStore.getState().credits
 assert.equal(useGameStore.getState().towers.length, 1)
 assert.equal(useGameStore.getState().saveGame(), true)

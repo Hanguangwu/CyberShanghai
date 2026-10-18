@@ -4,6 +4,7 @@ import { join } from 'node:path'
 import { Box3, BoxGeometry, Group, Mesh, MeshStandardMaterial, Texture, Vector3 } from 'three'
 import { ENEMY_DATA, ENEMY_MODEL_FILES, FIELD_SIZE, MAP_HEIGHT_RATIO, MAP_MODEL_FILE, TOWER_DATA, TOWER_MODEL_FILES, type EnemyType, type TowerType } from '../src/game/data.ts'
 import { instanceModel, normalizeModel } from '../src/game/models.ts'
+import { CAMPUS_MODULE_LAYOUT } from '../src/game/campusModels.ts'
 import { glbSize } from './glbBounds.ts'
 
 // GLTFLoader 对「glTF 中没有材质的 primitive」会注入 createDefaultMaterial()：
@@ -120,4 +121,7 @@ const countMaterial = (root: Group, predicate: (material: MeshStandardMaterial) 
   assert.ok(peak < 2, `压扁后地图最高点 ${peak.toFixed(2)} 必须低于 2 单位高的炮塔，否则会遮挡战场`)
 }
 
+assert.equal(CAMPUS_MODULE_LAYOUT.length, 17, 'all campus GLB modules must have an explicit layout entry')
+for (const module of CAMPUS_MODULE_LAYOUT) assert.ok(existsSync(join('public/campus_map', module.file)), `${module.file} must exist in public/campus_map`)
+assert.equal(CAMPUS_MODULE_LAYOUT.find((module) => module.file === '01_east_gate.glb')?.x, 52)
 console.log('models: all assertions passed')
