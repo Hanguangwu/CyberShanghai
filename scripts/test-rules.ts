@@ -10,7 +10,7 @@ import { allCampusRoutesReachCore, getWavePath } from '../src/game/campusMap.ts'
 const towers = [{ id: 1, x: 48, z: 0, type: 'pulse' as const, level: 1, cooldown: 0 }]
 assert.equal(canBuildAt(36, 0, towers), true)
 assert.equal(canBuildAt(48, 0, towers), false)
-assert.equal(canBuildAt(-60, 45, towers), false)
+assert.equal(canBuildAt(-61, 45, towers), false)
 assert.equal(upgradeCost(towers[0]), 100)
 assert.equal(sellValue(towers[0]), 100)
 assert.equal(spawnWave(1).length, 5)

@@ -5,6 +5,7 @@ import { Box3, BoxGeometry, Group, Mesh, MeshStandardMaterial, Texture, Vector3 
 import { ENEMY_DATA, ENEMY_MODEL_FILES, FIELD_SIZE, MAP_HEIGHT_RATIO, MAP_MODEL_FILE, TOWER_DATA, TOWER_MODEL_FILES, type EnemyType, type TowerType } from '../src/game/data.ts'
 import { instanceModel, normalizeModel } from '../src/game/models.ts'
 import { CAMPUS_MODULE_LAYOUT } from '../src/game/campusModels.ts'
+import { CAMPUS_CORE, CAMPUS_ROAD_WIDTH, CAMPUS_ROUTES, CAMPUS_SPAWN, allCampusRoutesReachCore } from '../src/game/campusMap.ts'
 import { glbSize } from './glbBounds.ts'
 
 // GLTFLoader 对「glTF 中没有材质的 primitive」会注入 createDefaultMaterial()：
@@ -123,5 +124,30 @@ const countMaterial = (root: Group, predicate: (material: MeshStandardMaterial) 
 
 assert.equal(CAMPUS_MODULE_LAYOUT.length, 17, 'all campus GLB modules must have an explicit layout entry')
 for (const module of CAMPUS_MODULE_LAYOUT) assert.ok(existsSync(join('public/campus_map', module.file)), `${module.file} must exist in public/campus_map`)
-assert.equal(CAMPUS_MODULE_LAYOUT.find((module) => module.file === '01_east_gate.glb')?.x, 52)
+assert.ok(existsSync(join('public/campus_map', '07_campus_main_avenue.glb')), 'campus avenue must exist for road rendering')
+const eastGate = CAMPUS_MODULE_LAYOUT.find((module) => module.file === '01_east_gate.glb')
+assert.deepEqual({ x: eastGate?.x, z: eastGate?.z }, { x: CAMPUS_SPAWN.x, z: CAMPUS_SPAWN.z }, 'east gate must be the enemy spawn')
+assert.equal(eastGate?.rotationY, Math.PI / 2, 'east gate must be rotated 90 degrees counter-clockwise')
+assert.deepEqual(CAMPUS_MODULE_LAYOUT.find((module) => module.file === '09_life_science.glb'), { file: '09_life_science.glb', x: -20, z: -30, rotationY: 0, height: 6.4 })
+assert.deepEqual(CAMPUS_MODULE_LAYOUT.find((module) => module.file === '15_conference_center.glb'), { file: '15_conference_center.glb', x: 28, z: -30, rotationY: 0, height: 6.4 })
+const expectedNorthSouthRows = new Map([
+  ['02_teaching_center.glb', 32], ['03_library.glb', 32], ['04_student_dormitory.glb', 12],
+  ['05_stadium.glb', 30], ['06_dining_hall.glb', 12], ['08_physical_science.glb', -10],
+  ['09_life_science.glb', -30], ['10_information_science.glb', -10], ['11_biomedical_engineering.glb', -10],
+  ['12_entrepreneurship_management.glb', 18], ['13_creativity_art.glb', 10], ['14_y_building.glb', 24],
+  ['15_conference_center.glb', -30], ['16_glass_gallery.glb', 22], ['17_library_information_center.glb', -10],
+])
+for (const [file, z] of expectedNorthSouthRows) assert.equal(CAMPUS_MODULE_LAYOUT.find((module) => module.file === file)?.z, z, `${file} must keep its north/south position`)
+for (const building of CAMPUS_MODULE_LAYOUT.filter((module) => module.file !== '01_east_gate.glb' && module.file !== '07_campus_main_avenue.glb')) assert.equal(building.rotationY, 0, `${building.file} must use the north/south 180-degree flip`) 
+assert.deepEqual(CAMPUS_CORE, { x: -52, z: 0 }, 'data center must be on the east side')
+assert.ok(allCampusRoutesReachCore(), 'every authored road must reach the data center')
+
+const blockedBuildings = CAMPUS_MODULE_LAYOUT.filter((module) => module.blocksRoad !== false)
+const roadHalfWidth = CAMPUS_ROAD_WIDTH / 2
+const roadHitsBuilding = (from: { x: number; z: number }, to: { x: number; z: number }, building: { x: number; z: number }) => {
+  const halfFootprint = 6
+  if (from.z === to.z) return building.z >= from.z - roadHalfWidth - halfFootprint && building.z <= from.z + roadHalfWidth + halfFootprint && building.x >= Math.min(from.x, to.x) - halfFootprint && building.x <= Math.max(from.x, to.x) + halfFootprint
+  return building.x >= from.x - roadHalfWidth - halfFootprint && building.x <= from.x + roadHalfWidth + halfFootprint && building.z >= Math.min(from.z, to.z) - halfFootprint && building.z <= Math.max(from.z, to.z) + halfFootprint
+}
+for (const route of CAMPUS_ROUTES) for (let index = 0; index < route.points.length - 1; index += 1) for (const building of blockedBuildings) assert.equal(roadHitsBuilding(route.points[index], route.points[index + 1], building), false, `${route.id} must not pass through ${building.file}`)
 console.log('models: all assertions passed')

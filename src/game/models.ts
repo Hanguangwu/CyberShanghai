@@ -12,6 +12,7 @@ const CENTER_TOWER_HEIGHT = 3.8
 const ENEMY_HEIGHTS: Record<EnemyType, number> = { beetle: 1.2, robot: 2, boss: 3.4 }
 const CENTER_TOWER_FILE = 'pioche.glb'
 const ENEMY_TINTS: Partial<Record<EnemyType, string>> = { boss: '#f3ca58' }
+const assetUrl = (folder: string, file: string) => `${import.meta.env.BASE_URL}${folder}/${file}`
 let cache: Promise<GameModels> | null = null
 
 export function loadGameModels(): Promise<GameModels> {
@@ -24,10 +25,10 @@ async function load(): Promise<GameModels> {
   const towerEntries = Object.entries(TOWER_MODEL_FILES) as [TowerType, string][]
   const enemyEntries = Object.entries(ENEMY_MODEL_FILES) as [EnemyType, string][]
   const [towerScenes, enemyScenes, centerGltf, mapGltf] = await Promise.all([
-    Promise.all(towerEntries.map(([, file]) => loader.loadAsync(`models/${file}`))),
-    Promise.all(enemyEntries.map(([, file]) => loader.loadAsync(`models/${file}`))),
-    loader.loadAsync(`models/${CENTER_TOWER_FILE}`),
-    loader.loadAsync(`models/${MAP_MODEL_FILE}`),
+    Promise.all(towerEntries.map(([, file]) => loader.loadAsync(assetUrl('models', file)))),
+    Promise.all(enemyEntries.map(([, file]) => loader.loadAsync(assetUrl('models', file)))),
+    loader.loadAsync(assetUrl('models', CENTER_TOWER_FILE)),
+    loader.loadAsync(assetUrl('models', MAP_MODEL_FILE)),
   ])
   const tower = {} as Record<TowerType, Group>
   // 兜底色用塔自身的主题色：万一某个模型缺材质，也不会退化成黑白。

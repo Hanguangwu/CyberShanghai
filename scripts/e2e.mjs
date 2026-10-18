@@ -24,7 +24,7 @@ try {
   page.on('pageerror', (error) => errors.push(error.message))
   const modelFiles = ['pioche.glb', 'machinegun_pbr.glb', 'flametower_pbr.glb', 'ice_tower_pbr.glb', 'rail_gun_pbr.glb', 'gas_tower_pbr.glb', 'hacker_tower_pbr.glb', 'army_beetle_pbr.glb', 'patrol-robot.glb', 'deepseek_whale_pbr.glb', 'mapv0_pbr.glb']
   const modelLoads = modelFiles.map((file) => page.waitForResponse((response) => response.url().endsWith(file) && response.status() === 200, { timeout: 30000 }))
-  await page.goto('http://127.0.0.1:4173/')
+  await page.goto('http://127.0.0.1:4173/CyberShanghaiTech/')
   assert.equal(await page.getByRole('button', { name: /开始游戏/ }).isVisible(), true)
   await page.evaluate(() => localStorage.clear())
   await page.getByRole('button', { name: /开始游戏/ }).click()
